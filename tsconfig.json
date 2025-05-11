@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": [
+      "vitest",
+      "vite-tsconfig-paths",
+      "vitest/globals",    // <-- here
+      "node"               // if you need Node built-ins
+    ],
+    "rootDir": "src"
+  },
+  "include": [
+    "src"
+  ]
+}
