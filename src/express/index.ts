@@ -1,0 +1,42 @@
+import express from "express";
+import { setupClassroomRoutes } from "../modules/Classroom/adapters/express";
+import { setupAuthenticationRoutes } from "../modules/Authentication/adapters/express";
+import { logger } from "../logger";
+import { errorHandler } from "./middlewares/error-handler";
+import { loggerMiddleware } from './middlewares/logger-middleware';
+import { transactionStartMiddleware } from './middlewares/transaction-start';
+import { transactionEndMiddleware, transactionErrorMiddleware } from './middlewares/transaction-end';
+import { authenticationMiddleware } from "./middlewares/authentication";
+import { setupActivitiesRoutes } from '@/modules/Activities/adapters/express';
+import { setupNotificationsRoutes } from '@/modules/Notifications/adapters/express';
+import cors from 'cors';
+
+export default class ExpressServer {
+  async start() {
+    const app = express();
+    app.use(cors({
+      origin: 'http://localhost:5173',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true,
+    }))
+    app.use(express.json());
+    app.use(transactionStartMiddleware);
+    app.use(authenticationMiddleware);
+    app.use(loggerMiddleware);
+    this.setupRoutes(app);
+    app.use(transactionEndMiddleware);
+    app.use(transactionErrorMiddleware);
+    app.use(errorHandler);
+    app.listen(3000, () => {
+      logger.info("Server is running on port 3000");
+    });
+  }
+
+  private setupRoutes(app: express.Express) {
+    setupClassroomRoutes(app);
+    setupAuthenticationRoutes(app);
+    setupActivitiesRoutes(app);
+    setupNotificationsRoutes(app);
+  }
+}

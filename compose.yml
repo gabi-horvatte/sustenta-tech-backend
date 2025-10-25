@@ -3,8 +3,9 @@ services:
     image: postgres:15
     environment:
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: db
       POSTGRES_USER: postgres
+      POSTGRES_DB: sustentatech
+      POSTGRES_DATABASE: sustentatech
     ports:
       - "5432:5432"
     volumes:

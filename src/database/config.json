@@ -1,0 +1,5 @@
+{
+  "db": {
+    "url": "postgres://postgres:secret@localhost:5432/sustentatech"
+  }
+}
