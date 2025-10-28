@@ -18,8 +18,8 @@ export default class ListClassroomStudents extends UseCase<ListClassroomStudents
   async execute(input: ListClassroomStudentsInput): Promise<ListClassroomStudentsOutput> {
     const classroomTeacher = await this.classroomTeacherGateway.findById({ classroom_id: input.classroom_id, teacher_id: input.teacher_id });
 
-    if (!classroomTeacher)
-      throw new Error('Teacher is not a classroom teacher');
+    if (!classroomTeacher && !input.manager)
+      throw new Error('Teacher is not a classroom teacher or manager');
 
     const students = await this.studentGateway.findByClassroomId({ classroomId: input.classroom_id });
     const accounts = await this.accountGateway.findByIds(students.map((student) => ({ id: student.id })));

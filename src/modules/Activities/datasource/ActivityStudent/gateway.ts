@@ -1,5 +1,5 @@
 import { PoolClient } from "pg";
-import TableDataGateway from '../../../Classroom/datasource/base-gateway';
+import TableDataGateway from '../../../shared/base-gateway';
 import { ActivityStudent } from "./model";
 
 export default class ActivityStudentGateway implements TableDataGateway<ActivityStudent, { activity_id: string, student_id: string }> {

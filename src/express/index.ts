@@ -10,6 +10,7 @@ import { authenticationMiddleware } from "./middlewares/authentication";
 import { setupActivitiesRoutes } from '@/modules/Activities/adapters/express';
 import { setupNotificationsRoutes } from '@/modules/Notifications/adapters/express';
 import cors from 'cors';
+import { setupMaterialsRoutes } from '@/modules/Materials/adapters/express';
 
 export default class ExpressServer {
   async start() {
@@ -38,5 +39,6 @@ export default class ExpressServer {
     setupAuthenticationRoutes(app);
     setupActivitiesRoutes(app);
     setupNotificationsRoutes(app);
+    setupMaterialsRoutes(app);
   }
 }

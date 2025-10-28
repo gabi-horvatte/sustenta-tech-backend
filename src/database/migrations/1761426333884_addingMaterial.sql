@@ -1,0 +1,11 @@
+-- Up Migration
+CREATE TABLE material (
+  id TEXT PRIMARY KEY,
+  type TEXT NOT NULL,
+  student_id TEXT NOT NULL REFERENCES student(id),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Down Migration
+DROP TABLE material;

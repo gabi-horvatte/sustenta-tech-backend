@@ -5,6 +5,7 @@ import { Account } from '@/modules/Authentication/datasource/Account/model';
 export const listClassroomStudentsInputSchema = z.object({
   classroom_id: z.string().min(1, 'Classroom ID is required'),
   teacher_id: z.string().min(1, 'Teacher ID is required'),
+  manager: z.boolean(),
 });
 
 export type ListClassroomStudentsInput = z.infer<typeof listClassroomStudentsInputSchema>;

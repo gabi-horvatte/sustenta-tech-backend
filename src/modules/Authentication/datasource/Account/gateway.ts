@@ -1,5 +1,5 @@
 import { PoolClient } from "pg";
-import TableDataGateway from '../../../Classroom/datasource/base-gateway';
+import TableDataGateway from '../../../shared/base-gateway';
 import { Account } from "./model";
 import bcrypt from "bcrypt";
 

@@ -15,7 +15,9 @@ export default class ListClassroomStudentsController {
     const validatedInput = listClassroomStudentsInputSchema.parse({
       classroom_id: req.query.classroom_id,
       teacher_id,
+      manager: 'manager' in req.account! ? req.account.manager : false,
     });
+
     const result = await this.listClassroomStudents.execute(validatedInput);
     res.status(200).json(result);
   }

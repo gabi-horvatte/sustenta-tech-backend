@@ -1,5 +1,5 @@
 import { PoolClient } from "pg";
-import TableDataGateway from "../base-gateway";
+import TableDataGateway from "../../../shared/base-gateway";
 import { Teacher } from "./model";
 
 export default class TeacherGateway implements TableDataGateway<Teacher, { id: string }> {
