@@ -11,4 +11,5 @@ export type ListUnreadNotificationsOutput = {
   account_id: string;
   message: string;
   url: string | null;
+  created_at: string;
 }[];  

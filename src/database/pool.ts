@@ -4,10 +4,10 @@ export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   min: 10,
   max: 100,
-  idleTimeoutMillis: 10000,
-  connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 1000,
+  connectionTimeoutMillis: 1000,
   maxUses: 10,
-  maxLifetimeSeconds: 60
+  maxLifetimeSeconds: 10
 });
 
 // Graceful shutdown

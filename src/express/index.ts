@@ -5,26 +5,26 @@ import { logger } from "../logger";
 import { errorHandler } from "./middlewares/error-handler";
 import { loggerMiddleware } from './middlewares/logger-middleware';
 import { transactionStartMiddleware } from './middlewares/transaction-start';
-import { transactionEndMiddleware, transactionErrorMiddleware } from './middlewares/transaction-end';
 import { authenticationMiddleware } from "./middlewares/authentication";
 import { setupActivitiesRoutes } from '@/modules/Activities/adapters/express';
 import { setupNotificationsRoutes } from '@/modules/Notifications/adapters/express';
 import cors from 'cors';
 import { setupMaterialsRoutes } from '@/modules/Materials/adapters/express';
+import { transactionEndMiddleware, transactionErrorMiddleware } from './middlewares/transaction-end';
 
 export default class ExpressServer {
   async start() {
     const app = express();
     app.use(cors({
       origin: 'http://localhost:5173',
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
     }))
     app.use(express.json());
+    app.use(loggerMiddleware);
     app.use(transactionStartMiddleware);
     app.use(authenticationMiddleware);
-    app.use(loggerMiddleware);
     this.setupRoutes(app);
     app.use(transactionEndMiddleware);
     app.use(transactionErrorMiddleware);

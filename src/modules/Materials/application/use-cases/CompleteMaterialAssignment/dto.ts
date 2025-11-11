@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const completeMaterialAssignmentInputSchema = z.object({
-  type: z.enum(['article', 'video', 'something', 'other']),
+  id: z.string().min(1, 'Material ID is required'),
   student_id: z.string().min(1, 'Student ID is required'),
 });
 

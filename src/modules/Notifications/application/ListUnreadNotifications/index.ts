@@ -15,6 +15,7 @@ export default class ListUnreadNotifications extends UseCase<ListUnreadNotificat
       account_id: notification.account_id,
       message: notification.message,
       url: notification.url,
+      created_at: notification.created_at.toISOString(),
     }));
   }
 }

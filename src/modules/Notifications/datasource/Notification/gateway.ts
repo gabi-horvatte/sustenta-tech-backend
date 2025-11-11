@@ -28,7 +28,7 @@ export default class NotificationGateway implements TableDataGateway<Notificatio
 
   async update(data: Omit<Notification, 'created_at' | 'updated_at'>): Promise<void> {
     await this.client.query(`
-      UPDATE notification SET account_id = $1, message = $2, url = $3, creation_reason = $4, created_by = $5 WHERE id = $6
+      UPDATE notification SET account_id = $1, message = $2, url = $3, creation_reason = $4, created_by = $5, read_at = $6 WHERE id = $7
     `,
       [
         data.account_id,
@@ -36,6 +36,7 @@ export default class NotificationGateway implements TableDataGateway<Notificatio
         data.url,
         data.creation_reason,
         data.created_by,
+        data.read_at,
         data.id,
       ]);
   }

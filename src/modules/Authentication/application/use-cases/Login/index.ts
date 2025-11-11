@@ -4,9 +4,10 @@ import { AccountNotFoundError, LoginInput, LoginOutput } from './dto';
 import jwt from 'jsonwebtoken';
 import TeacherGateway from '@/modules/Classroom/datasource/Teacher/gateway';
 import bcrypt from 'bcrypt';
+import StudentGateway from '@/modules/Classroom/datasource/Student/gateway';
 
 export default class Login extends UseCase<LoginInput, LoginOutput> {
-  constructor(private readonly accountGateway: AccountGateway, private readonly teacherGateway: TeacherGateway) {
+  constructor(private readonly accountGateway: AccountGateway, private readonly teacherGateway: TeacherGateway, private readonly studentGateway: StudentGateway) {
     super();
   }
 
@@ -16,9 +17,25 @@ export default class Login extends UseCase<LoginInput, LoginOutput> {
       throw new AccountNotFoundError();
     }
 
-    const payload: { id: string, role: string, manager?: boolean } = {
+    const payload: {
+      id: string,
+      role: string,
+      email: string,
+      name: string,
+      last_name: string,
+      manager?: boolean,
+      code?: string,
+      phone: string,
+      birth_date: Date,
+      classroom_id?: string,
+    } = {
       id: account.id,
       role: account.role,
+      email: account.email,
+      name: account.name,
+      last_name: account.last_name,
+      phone: account.phone,
+      birth_date: account.birth_date,
     };
 
     if (account.role === 'TEACHER') {
@@ -27,6 +44,15 @@ export default class Login extends UseCase<LoginInput, LoginOutput> {
         throw new AccountNotFoundError();
       }
       payload.manager = teacher.manager;
+    }
+
+    if (account.role === 'STUDENT') {
+      const student = await this.studentGateway.findById({ id: account.id });
+      if (!student) {
+        throw new AccountNotFoundError();
+      }
+      payload.code = student.code;
+      payload.classroom_id = student.classroom_id;
     }
 
     const token = jwt.sign(payload, process.env.JWT_SECRET as string, { algorithm: 'HS256', expiresIn: '1h' });

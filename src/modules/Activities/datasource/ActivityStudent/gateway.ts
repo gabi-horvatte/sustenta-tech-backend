@@ -22,13 +22,13 @@ export default class ActivityStudentGateway implements TableDataGateway<Activity
 
   async update(data: Omit<ActivityStudent, 'created_at' | 'updated_at'>): Promise<void> {
     await this.client.query(`
-      UPDATE activity_student SET activity_id = $1, student_id = $2, completed_at = $3, updated_at = $4 WHERE activity_id = $5 AND student_id = $6
+      UPDATE activity_student SET completed_at = $1, updated_at = $2 WHERE activity_id = $3 AND student_id = $4
     `,
       [
-        data.activity_id,
-        data.student_id,
         data.completed_at,
         new Date(),
+        data.activity_id,
+        data.student_id,
       ]);
   }
 
@@ -53,6 +53,12 @@ export default class ActivityStudentGateway implements TableDataGateway<Activity
 
   async findByActivityIds(activity_ids: string[]): Promise<ActivityStudent[]> {
     const result = await this.client.query("SELECT * FROM activity_student WHERE activity_id = ANY($1)", [activity_ids]);
+
+    return result.rows;
+  }
+
+  async findByStudentIds(student_ids: string[]): Promise<ActivityStudent[]> {
+    const result = await this.client.query("SELECT * FROM activity_student WHERE student_id = ANY($1)", [student_ids]);
 
     return result.rows;
   }

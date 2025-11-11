@@ -11,5 +11,14 @@ CREATE TABLE activity (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE activity_student (
+  activity_id TEXT NOT NULL REFERENCES activity(id),
+  student_id TEXT NOT NULL REFERENCES student(id),
+  completed_at TIMESTAMP,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Down Migration
+DROP TABLE activity_student;
 DROP TABLE activity;

@@ -8,7 +8,7 @@ import ListStudentMaterialsController from './list-materials';
 import GetStudentMaterial from '../../application/use-cases/GetStudentMaterial';
 
 export const setupMaterialsRoutes = (router: Router) => {
-  router.post("/material/complete", asyncHandler(async (req, res) => {
+  router.patch("/material/:id/complete", asyncHandler(async (req, res) => {
     const materialGateway = new MaterialGateway(req.dbClient);
     await new CompleteMaterialController(new CompleteMaterialAssignment(materialGateway)).handle(req, res);
   }));

@@ -68,4 +68,10 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
 
     return result.rows;
   }
+
+  async findByTeacherId(identifier: { teacherId: string }): Promise<Activity[]> {
+    const result = await this.client.query("SELECT * FROM activity WHERE teacher_id = $1", [identifier.teacherId]);
+
+    return result.rows;
+  }
 }

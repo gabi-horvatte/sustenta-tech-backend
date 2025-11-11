@@ -7,7 +7,9 @@ export default class GetClassroomListController {
 
   @hasRole('TEACHER')
   async handle(_req: Request, res: Response) {
+    console.log('get classroom list controller');
     const result = await this.getClassroomList.execute();
+    console.log('get classroom list result', result);
     res.status(200).json(result);
   }
 }

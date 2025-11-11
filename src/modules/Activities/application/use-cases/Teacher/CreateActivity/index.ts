@@ -33,8 +33,8 @@ export default class CreateActivity extends UseCase<CreateActivityInput, CreateA
     await this.notificationGateway.insert({
       id,
       account_id: input.teacher_id,
-      message: `Activity ${input.name} created`,
-      url: null,
+      message: `Atividade ${input.name} criada`,
+      url: `/management/activities`,
       creation_reason: 'ACTIVITY_CREATED',
       created_by: input.teacher_id,
       read_at: null,
@@ -46,8 +46,8 @@ export default class CreateActivity extends UseCase<CreateActivityInput, CreateA
       this.notificationGateway.insert({
         id: uuid.v4(),
         account_id: student.id,
-        message: `Activity ${input.name} created`,
-        url: null,
+        message: `Atividade ${input.name} criada`,
+        url: `/students/activities`,
         creation_reason: 'ACTIVITY_CREATED',
         created_by: input.teacher_id,
         read_at: null,

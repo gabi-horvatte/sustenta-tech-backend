@@ -9,7 +9,7 @@ export default class CompleteMaterialController {
   @hasRole('STUDENT')
   async handle(req: Request, res: Response) {
     const validatedInput = completeMaterialAssignmentInputSchema.parse({
-      type: req.body.type,
+      id: req.params.id,
       student_id: req.account?.id,
     });
     const result = await this.completeMaterialAssignment.execute(validatedInput);
