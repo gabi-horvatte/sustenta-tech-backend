@@ -1,11 +1,23 @@
 import ExpressServer from "./server";
+import { initializeDefaultManager } from "./setup/initialize-manager";
 
-console.log("Starting application...");
-console.log("Environment variables:");
-console.log("- JWT_SECRET:", process.env.JWT_SECRET ? "SET" : "NOT SET");
-console.log("- DATABASE_URL:", process.env.DATABASE_URL ? "SET" : "NOT SET");
+async function startApplication() {
+  console.log("Starting application...");
+  console.log("Environment variables:");
+  console.log("- JWT_SECRET:", process.env.JWT_SECRET ? "SET" : "NOT SET");
+  console.log("- DATABASE_URL:", process.env.DATABASE_URL ? "SET" : "NOT SET");
+  console.log("- MANAGER_EMAIL:", process.env.MANAGER_EMAIL ? "SET" : "NOT SET");
+  console.log("- MANAGER_PASSWORD:", process.env.MANAGER_PASSWORD ? "SET" : "NOT SET");
 
-const server = new ExpressServer();
+  // Initialize default manager account
+  await initializeDefaultManager();
+
+  const server = new ExpressServer();
+
+  console.log("Calling server.start()...");
+  await server.start();
+}
+
 
 // Add process event listeners to catch unexpected exits
 process.on('uncaughtException', (error) => {
@@ -28,8 +40,7 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-console.log("Calling server.start()...");
-server.start().catch((error) => {
-  console.error("Failed to start server:", error);
+startApplication().catch((error) => {
+  console.error("Failed to start application:", error);
   process.exit(1);
 });
