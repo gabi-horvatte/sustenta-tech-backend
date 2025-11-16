@@ -25,7 +25,7 @@ export default class EditActivity extends UseCase<EditActivityInput, EditActivit
       url: input.url || activity.url,
       classroom_id: input.classroom_id || activity.classroom_id,
       teacher_id: input.teacher_id || activity.teacher_id,
-      expires_at: input.expires_at || activity.expires_at,
+      expires_at: new Date(input.expires_at || activity.expires_at),
     };
 
     await this.activityGateway.update(updatedActivity);

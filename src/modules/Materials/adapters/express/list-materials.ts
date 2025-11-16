@@ -16,12 +16,12 @@ export default class ListStudentMaterialsController {
     if (!student_id)
       return res.status(400).json({ message: "Student ID is required." });
 
-    const type = req.query.type;
+    const id = req.query.id;
 
-    if (type) {
+    if (id) {
       const validatedInput = getStudentMaterialInputSchema.parse({
         student_id,
-        type,
+        id,
       });
       const result = await this.getStudentMaterial.execute(validatedInput);
       res.status(200).json(result);

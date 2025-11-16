@@ -5,7 +5,7 @@ export default class UseCase<Input, Output> {
   constructor() { }
 
   @useCaseMetricEmitter()
-  execute(_input: Input): Promise<Output | void> {
+  async execute(_input: Input): Promise<Output | void> {
     throw new Error("Method not implemented.");
   }
 }

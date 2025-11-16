@@ -4,6 +4,8 @@
   "type": "commonjs",
   "scripts": {
     "start:dev": "JWT_SECRET=secret TZ=utc DATABASE_URL=postgres://postgres:secret@localhost:5432/sustentatech tsx src/main.ts",
+    "start": "",
+    "build": "tsc",
     "test": "vitest run",
     "test:watch": "vitest",
     "migrate:create": "node-pg-migrate -f src/database/config.json -m src/database/migrations create -j sql",

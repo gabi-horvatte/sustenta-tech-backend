@@ -6,7 +6,7 @@ export default class GetStudentMaterial extends UseCase<GetStudentMaterialInput,
   constructor(private readonly materialGateway: MaterialGateway) { super(); }
 
   async execute(input: GetStudentMaterialInput): Promise<GetStudentMaterialOutput> {
-    const material = await this.materialGateway.findByStudentIdAndType({ student_id: input.student_id, type: input.type });
+    const material = await this.materialGateway.findById({ id: input.id, student_id: input.student_id });
 
     return material;
   }
