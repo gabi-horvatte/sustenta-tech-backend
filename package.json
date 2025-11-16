@@ -4,7 +4,7 @@
   "type": "commonjs",
   "scripts": {
     "start:dev": "JWT_SECRET=secret TZ=utc DATABASE_URL=postgres://postgres:secret@localhost:5432/sustentatech tsx src/main.ts",
-    "start": "TZ=utc node dist/main.js",
+    "start": "TZ=utc yarn node dist/main.js",
     "build": "tsc && tsc-alias",
     "test": "vitest run",
     "test:watch": "vitest",

@@ -14,7 +14,9 @@ import { transactionEndMiddleware, transactionErrorMiddleware } from './middlewa
 
 export default class ExpressServer {
   async start() {
+    console.log("ExpressServer.start() called");
     const app = express();
+    console.log("Express app created");
     app.use(cors({
       origin: 'http://localhost:5173',
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
@@ -25,11 +27,15 @@ export default class ExpressServer {
     app.use(loggerMiddleware);
     app.use(transactionStartMiddleware);
     app.use(authenticationMiddleware);
+    console.log("Setting up routes...");
     this.setupRoutes(app);
+    console.log("Routes setup complete");
     app.use(transactionEndMiddleware);
     app.use(transactionErrorMiddleware);
     app.use(errorHandler);
+    console.log("Starting server on port 3000...");
     app.listen(3000, () => {
+      console.log("Server listen callback called");
       logger.info("Server is running on port 3000");
     });
   }
