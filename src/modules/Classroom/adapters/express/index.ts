@@ -18,7 +18,7 @@ import DeleteClassroom from "../../application/use-cases/Manager/DeleteClassroom
 import ListClassroomStudentsController from "./student/get-classroom-students";
 import ListClassroomStudents from "../../application/use-cases/Teacher/ListClassroomStudents";
 import ClassroomTeacherGateway from "../../datasource/ClassroomTeacher/gateway";
-import { asyncHandler } from '@/express/utils/async-handler';
+import { asyncHandler } from '@/server/utils/async-handler';
 import GetClassroomController from "./classroom/get";
 import GetClassroom from "../../application/use-cases/GetClassroom";
 import GetStudentController from "./student/get";

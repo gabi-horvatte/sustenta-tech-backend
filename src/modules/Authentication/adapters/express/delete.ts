@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import DeleteAccount from "../../application/use-cases/DeleteAccount";
 import { DeleteAccountInput, deleteAccountInputSchema } from "../../application/use-cases/DeleteAccount/dto";
-import isManager from '@/express/decorators/authorization/isManager';
+import isManager from '@/server/decorators/authorization/isManager';
 
 export default class DeleteAccountController {
   constructor(private readonly deleteAccount: DeleteAccount) { }

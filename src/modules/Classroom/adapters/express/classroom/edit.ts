@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import EditClassroom from "../../../application/use-cases/Manager/EditClassroom";
 import { editClassroomInputSchema } from "../../../application/use-cases/Manager/EditClassroom/dto";
-import hasRole from '@/express/decorators/authorization/hasRole';
+import hasRole from '@/server/decorators/authorization/hasRole';
 
 export default class EditClassroomController {
   constructor(private readonly editClassroom: EditClassroom) { }

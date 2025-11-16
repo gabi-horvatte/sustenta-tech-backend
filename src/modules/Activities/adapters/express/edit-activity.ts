@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import EditActivity from "../../application/use-cases/Teacher/EditActivity";
 import { EditActivityInput, editActivityInputSchema } from "../../application/use-cases/Teacher/EditActivity/dto";
-import hasRole from '@/express/decorators/authorization/hasRole';
+import hasRole from '@/server/decorators/authorization/hasRole';
 
 export default class EditActivityController {
   constructor(private readonly editActivity: EditActivity) { }

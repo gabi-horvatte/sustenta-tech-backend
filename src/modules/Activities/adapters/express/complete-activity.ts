@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import CompleteActivity from "../../application/use-cases/Student/CompleteActivity";
-import hasRole from '@/express/decorators/authorization/hasRole';
+import hasRole from '@/server/decorators/authorization/hasRole';
 import { completeActivityInputSchema } from '../../application/use-cases/Student/CompleteActivity/dto';
 
 export default class CompleteActivityController {

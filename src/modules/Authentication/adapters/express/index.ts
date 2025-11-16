@@ -7,7 +7,7 @@ import DeleteAccountController from "./delete";
 import LoginController from './login';
 import Login from "../../application/use-cases/Login";
 import TeacherGateway from "@/modules/Classroom/datasource/Teacher/gateway";
-import { asyncHandler } from '@/express/utils/async-handler';
+import { asyncHandler } from '@/server/utils/async-handler';
 import StudentGateway from '@/modules/Classroom/datasource/Student/gateway';
 
 export const setupAuthenticationRoutes = (router: Router) => {

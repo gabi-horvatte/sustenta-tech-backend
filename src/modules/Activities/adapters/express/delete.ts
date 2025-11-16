@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import DeleteActivity from "../../application/use-cases/Teacher/DeleteActivity";
 import { DeleteActivityInput, deleteActivityInputSchema } from "../../application/use-cases/Teacher/DeleteActivity/dto";
-import hasRole from '@/express/decorators/authorization/hasRole';
+import hasRole from '@/server/decorators/authorization/hasRole';
 
 export default class DeleteActivityController {
   constructor(private readonly deleteActivity: DeleteActivity) { }

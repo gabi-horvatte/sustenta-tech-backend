@@ -1,7 +1,7 @@
 import ActivityGateway from '../../datasource/Activity/gateway';
 import EditActivityController from './edit-activity';
 import EditActivity from '../../application/use-cases/Teacher/EditActivity';
-import { asyncHandler } from '@/express/utils/async-handler';
+import { asyncHandler } from '@/server/utils/async-handler';
 import DeleteActivityController from './delete';
 import DeleteActivity from '../../application/use-cases/Teacher/DeleteActivity';
 import { Router } from 'express';

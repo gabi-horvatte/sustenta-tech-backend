@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncHandler } from '@/express/utils/async-handler';
+import { asyncHandler } from '@/server/utils/async-handler';
 import NotificationGateway from '../../datasource/Notification/gateway';
 import ListUnreadNotificationsController from './list';
 import ListUnreadNotifications from '../../application/ListUnreadNotifications';

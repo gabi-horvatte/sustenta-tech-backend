@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import GetTeacher from "../../../application/use-cases/Teacher/GetTeacher";
 import { getTeacherInputSchema } from "../../../application/use-cases/Teacher/GetTeacher/dto";
-import hasRole from '@/express/decorators/authorization/hasRole';
+import hasRole from '@/server/decorators/authorization/hasRole';
 
 export default class GetTeacherController {
   constructor(private readonly getTeacher: GetTeacher) { }

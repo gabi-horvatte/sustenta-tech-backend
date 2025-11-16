@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import CompleteMaterialAssignment from '../../application/use-cases/CompleteMaterialAssignment';
 import { completeMaterialAssignmentInputSchema } from '../../application/use-cases/CompleteMaterialAssignment/dto';
-import hasRole from '@/express/decorators/authorization/hasRole';
+import hasRole from '@/server/decorators/authorization/hasRole';
 
 export default class CompleteMaterialController {
   constructor(private readonly completeMaterialAssignment: CompleteMaterialAssignment) { }

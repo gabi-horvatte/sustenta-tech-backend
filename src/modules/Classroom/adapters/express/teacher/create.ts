@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import CreateTeacher from "../../../application/use-cases/Manager/CreateTeacher";
 import { createTeacherInputSchema } from "../../../application/use-cases/Manager/CreateTeacher/dto";
-import isManager from '@/express/decorators/authorization/isManager';
+import isManager from '@/server/decorators/authorization/isManager';
 
 export default class CreateTeacherController {
   constructor(private readonly createTeacher: CreateTeacher) { }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import GetClassroomList from "../../../application/use-cases/Teacher/GetClassroomList";
-import hasRole from '@/express/decorators/authorization/hasRole';
+import hasRole from '@/server/decorators/authorization/hasRole';
 
 export default class GetClassroomListController {
   constructor(private readonly getClassroomList: GetClassroomList) { }

@@ -4,8 +4,8 @@
   "type": "commonjs",
   "scripts": {
     "start:dev": "JWT_SECRET=secret TZ=utc DATABASE_URL=postgres://postgres:secret@localhost:5432/sustentatech tsx src/main.ts",
-    "start": "",
-    "build": "tsc",
+    "start": "TZ=utc node dist/main.js",
+    "build": "tsc && tsc-alias",
     "test": "vitest run",
     "test:watch": "vitest",
     "migrate:create": "node-pg-migrate -f src/database/config.json -m src/database/migrations create -j sql",
@@ -17,11 +17,13 @@
     "@types/cors": "^2",
     "@types/express": "^5",
     "@types/jsonwebtoken": "^9",
+    "@types/module-alias": "^2",
     "@types/node": "^22.15.17",
     "@types/pg": "^8",
     "eslint": "^9.26.0",
     "node-pg-migrate": "^8.0.3",
     "prettier": "^3.5.3",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.20.4",
     "typescript": "^5.8.3",
     "vite-tsconfig-paths": "^5.1.4",
@@ -33,8 +35,12 @@
     "express": "^5.1.0",
     "express-body-parser-error-handler": "^1.0.9",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "pg": "^8.16.3",
     "uuid": "^11.1.0",
     "zod": "^4.0.17"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

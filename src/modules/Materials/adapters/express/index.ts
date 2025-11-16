@@ -2,7 +2,7 @@ import { Router } from "express";
 import NotificationGateway from '@/modules/Notifications/datasource/Notification/gateway';
 import AccountGateway from '@/modules/Authentication/datasource/Account/gateway';
 import MaterialGateway from '../../datasource/gateway';
-import { asyncHandler } from '@/express/utils/async-handler';
+import { asyncHandler } from '@/server/utils/async-handler';
 import CompleteMaterialAssignment from '../../application/use-cases/CompleteMaterialAssignment';
 import CompleteMaterialController from './complete-material';
 import ListStudentMaterials from '../../application/use-cases/ListStudentMaterials';

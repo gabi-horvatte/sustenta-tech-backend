@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 import CreateClassroom from "../../../application/use-cases/Manager/CreateClassroom";
 import { createClassroomInputSchema } from "../../../application/use-cases/Manager/CreateClassroom/dto";
-import isManager from '@/express/decorators/authorization/isManager';
+import isManager from '@/server/decorators/authorization/isManager';
 
 export default class CreateClassroomController {
   constructor(private readonly createClassroom: CreateClassroom) { }

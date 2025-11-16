@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import ListClassroomStudents from "../../../application/use-cases/Teacher/ListClassroomStudents";
 import { listClassroomStudentsInputSchema } from "../../../application/use-cases/Teacher/ListClassroomStudents/dto";
-import hasRole from '@/express/decorators/authorization/hasRole';
+import hasRole from '@/server/decorators/authorization/hasRole';
 
 export default class ListClassroomStudentsController {
   constructor(private readonly listClassroomStudents: ListClassroomStudents) { }
