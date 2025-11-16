@@ -67,7 +67,7 @@ export default class NotificationGateway implements TableDataGateway<Notificatio
   }
 
   async findUnreadNotifications(accountId: string): Promise<Notification[]> {
-    const result = await this.client.query("SELECT * FROM notification WHERE account_id = $1 AND read_at IS NULL", [accountId]);
+    const result = await this.client.query("SELECT * FROM notification WHERE account_id = $1 AND read_at IS NULL ORDER BY created_at DESC", [accountId]);
 
     return result.rows;
   }

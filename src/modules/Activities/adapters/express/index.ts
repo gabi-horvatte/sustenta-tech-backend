@@ -38,7 +38,8 @@ export const setupActivitiesRoutes = (router: Router) => {
     const activityStudentGateway = new ActivityStudentGateway(req.dbClient);
     const notificationGateway = new NotificationGateway(req.dbClient);
     const classroomGateway = new ClassroomGateway(req.dbClient);
-    await new CompleteActivityController(new CompleteActivity(activityGateway, activityStudentGateway, notificationGateway, classroomGateway)).handle(req, res);
+    const accountGateway = new AccountGateway(req.dbClient);
+    await new CompleteActivityController(new CompleteActivity(activityGateway, activityStudentGateway, notificationGateway, classroomGateway, accountGateway)).handle(req, res);
   }));
 
   router.delete("/activity/:activity_id", asyncHandler(async (req, res, next) => {
@@ -49,8 +50,9 @@ export const setupActivitiesRoutes = (router: Router) => {
   router.post("/activity", asyncHandler(async (req, res, next) => {
     const activityGateway = new ActivityGateway(req.dbClient);
     const studentGateway = new StudentGateway(req.dbClient);
+    const classroomGateway = new ClassroomGateway(req.dbClient);
     const notificationGateway = new NotificationGateway(req.dbClient);
-    await new CreateActivityController(new CreateActivity(activityGateway, studentGateway, notificationGateway)).handle(req, res);
+    await new CreateActivityController(new CreateActivity(activityGateway, studentGateway, classroomGateway, notificationGateway)).handle(req, res);
   }));
 
   router.get("/activity", asyncHandler(async (req, res, next) => {

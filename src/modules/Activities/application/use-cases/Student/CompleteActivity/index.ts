@@ -5,13 +5,15 @@ import ActivityGateway from '@/modules/Activities/datasource/Activity/gateway';
 import NotificationGateway from '@/modules/Notifications/datasource/Notification/gateway';
 import * as uuid from 'uuid';
 import ClassroomGateway from '@/modules/Classroom/datasource/Classroom/gateway';
+import AccountGateway from '@/modules/Authentication/datasource/Account/gateway';
 
 export default class CompleteActivity extends UseCase<CompleteActivityInput, CompleteActivityOutput> {
   constructor(
     private readonly activityGateway: ActivityGateway,
     private readonly activityStudentGateway: ActivityStudentGateway,
     private readonly notificationGateway: NotificationGateway,
-    private readonly classroomGateway: ClassroomGateway
+    private readonly classroomGateway: ClassroomGateway,
+    private readonly accountGateway: AccountGateway
   ) {
     super();
   }
@@ -28,11 +30,15 @@ export default class CompleteActivity extends UseCase<CompleteActivityInput, Com
     if (activity.expires_at < new Date())
       throw new Error('Activity expired');
 
+    const student = await this.accountGateway.findById({ id: input.student_id });
+    if (!student || student.role !== 'STUDENT')
+      throw new Error('Student not found');
+
     const now = new Date();
 
     const activityStudent = await this.activityStudentGateway.findById({ activity_id: input.activity_id, student_id: input.student_id });
 
-    if (!activityStudent)
+    if (activityStudent)
       await this.activityStudentGateway.update({ activity_id: input.activity_id, student_id: input.student_id, completed_at: now });
     else
       await this.activityStudentGateway.insert({ activity_id: input.activity_id, student_id: input.student_id, completed_at: now });
@@ -40,7 +46,7 @@ export default class CompleteActivity extends UseCase<CompleteActivityInput, Com
     await this.notificationGateway.insert({
       id: uuid.v4(),
       account_id: activity.teacher_id,
-      message: `Atividade ${activity.name} completada por ${input.student_id}`,
+      message: `Atividade ${activity.name} concluída por ${student.name} ${student.last_name}`,
       url: `/management/activities/activity/${input.activity_id}?name=${activity.name}&description=${activity.description}&classroom_name=${classroom.name}`,
       creation_reason: 'ACTIVITY_COMPLETED',
       created_by: input.student_id,
