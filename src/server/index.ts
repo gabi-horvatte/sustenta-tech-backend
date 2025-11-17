@@ -19,12 +19,37 @@ export default class ExpressServer {
     console.log("ExpressServer.start() called");
     const app = express();
     console.log("Express app created");
-    app.use(cors({
-      origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    console.log("FRONTEND_URL environment variable:", process.env.FRONTEND_URL);
+    // CORS configuration for production deployment
+    const corsOptions = {
+      origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        const allowedOrigins = [
+          process.env.FRONTEND_URL,
+          'http://localhost:5173',
+          'http://localhost:3000',
+          'https://localhost:5173',
+          'https://localhost:3000'
+        ].filter(Boolean); // Remove undefined values
+
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          console.log(`CORS blocked origin: ${origin}`);
+          console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
+          callback(new Error('Not allowed by CORS'), false);
+        }
+      },
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
       credentials: true,
-    }))
+      optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+      preflightContinue: false,
+    };
+
+    app.use(cors(corsOptions));
     app.use(express.json());
     app.use(loggerMiddleware);
     app.use(transactionStartMiddleware);
