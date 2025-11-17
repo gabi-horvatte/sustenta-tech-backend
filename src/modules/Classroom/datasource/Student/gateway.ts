@@ -37,4 +37,9 @@ export default class StudentGateway implements TableDataGateway<Student, { id: s
 
     return result.rows;
   }
+
+  async findAll(): Promise<Student[]> {
+    const result = await this.client.query("SELECT * FROM student");
+    return result.rows;
+  }
 }

@@ -30,7 +30,7 @@ export default class ListStudentActivities extends UseCase<ListStudentActivities
         activity_name: activity.name,
         expires_at: activity.expires_at,
         description: activity.description,
-        url: activity.url,
+        activity_template_id: activity.activity_template_id,
       };
     });
   }

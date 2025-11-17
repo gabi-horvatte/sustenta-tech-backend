@@ -28,10 +28,10 @@ export default class CreateActivity extends UseCase<CreateActivityInput, CreateA
       id,
       name: input.name,
       description: input.description,
-      url: input.url,
       classroom_id: input.classroom_id,
       teacher_id: input.teacher_id,
       expires_at: new Date(input.expires_at),
+      activity_template_id: input.activity_template_id,
     };
 
     const students = await this.studentGateway.findByClassroomId({ classroomId: input.classroom_id });
@@ -52,7 +52,7 @@ export default class CreateActivity extends UseCase<CreateActivityInput, CreateA
           id: uuid.v4(),
           account_id: student.id,
           message: `Atividade ${input.name} criada`,
-          url: `/students/activities`,
+          url: `/student/activities`,
           creation_reason: 'ACTIVITY_CREATED',
           created_by: input.teacher_id,
           read_at: null,
@@ -63,7 +63,7 @@ export default class CreateActivity extends UseCase<CreateActivityInput, CreateA
       id,
       name: input.name,
       description: input.description,
-      url: input.url,
+      activity_template_id: input.activity_template_id,
       classroom_id: input.classroom_id,
       teacher_id: input.teacher_id,
       expires_at: new Date(input.expires_at),

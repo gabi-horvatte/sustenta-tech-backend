@@ -26,7 +26,7 @@ export default class ListActivities extends UseCase<ListActivitiesInput, ListAct
         id: activity.id,
         name: activity.name,
         description: activity.description,
-        url: activity.url,
+        activity_template_id: activity.activity_template_id,
         classroom_id: activity.classroom_id,
         teacher_id: activity.teacher_id,
         expires_at: activity.expires_at,

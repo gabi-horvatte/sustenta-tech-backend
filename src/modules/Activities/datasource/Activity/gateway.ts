@@ -11,34 +11,34 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
         id,
         name,
         description,
-        url,
         classroom_id,
         teacher_id,
-        expires_at
+        expires_at,
+        activity_template_id
       ) VALUES ($1,$2,$3,$4,$5,$6,$7)
     `,
       [
         data.id,
         data.name,
         data.description,
-        data.url,
         data.classroom_id,
         data.teacher_id,
-        data.expires_at
+        data.expires_at,
+        data.activity_template_id
       ]);
   }
 
   async update(data: Omit<Activity, 'created_at' | 'updated_at'>): Promise<void> {
     await this.client.query(`
-      UPDATE activity SET name = $1, description = $2, url = $3, classroom_id = $4, teacher_id = $5, expires_at = $6, updated_at = $7 WHERE id = $8
+      UPDATE activity SET name = $1, description = $2, classroom_id = $3, teacher_id = $4, expires_at = $5, activity_template_id = $6, updated_at = $7 WHERE id = $8
     `,
       [
         data.name,
         data.description,
-        data.url,
         data.classroom_id,
         data.teacher_id,
         data.expires_at,
+        data.activity_template_id,
         new Date(),
         data.id,
       ]);
@@ -51,6 +51,11 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
       return null;
 
     return result.rows[0];
+  }
+
+  async findByTeacherId(teacherId: string): Promise<Activity[]> {
+    const result = await this.client.query("SELECT * FROM activity WHERE teacher_id = $1 ORDER BY created_at DESC", [teacherId]);
+    return result.rows;
   }
 
   async delete(identifier: { id: string }): Promise<void> {
@@ -69,9 +74,4 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
     return result.rows;
   }
 
-  async findByTeacherId(identifier: { teacherId: string }): Promise<Activity[]> {
-    const result = await this.client.query("SELECT * FROM activity WHERE teacher_id = $1", [identifier.teacherId]);
-
-    return result.rows;
-  }
 }

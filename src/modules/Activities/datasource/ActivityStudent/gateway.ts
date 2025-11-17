@@ -51,15 +51,34 @@ export default class ActivityStudentGateway implements TableDataGateway<Activity
     return result.rows;
   }
 
-  async findByActivityIds(activity_ids: string[]): Promise<ActivityStudent[]> {
-    const result = await this.client.query("SELECT * FROM activity_student WHERE activity_id = ANY($1)", [activity_ids]);
+  async findByStudentIds(student_ids: string[]): Promise<ActivityStudent[]> {
+    const result = await this.client.query("SELECT * FROM activity_student WHERE student_id = ANY($1)", [student_ids]);
 
     return result.rows;
   }
 
-  async findByStudentIds(student_ids: string[]): Promise<ActivityStudent[]> {
-    const result = await this.client.query("SELECT * FROM activity_student WHERE student_id = ANY($1)", [student_ids]);
+  async findByActivityId(activity_id: string): Promise<ActivityStudent[]> {
+    const result = await this.client.query("SELECT * FROM activity_student WHERE activity_id = $1", [activity_id]);
+    return result.rows;
+  }
 
+  async findByActivityAndStudent(activity_id: string, student_id: string): Promise<ActivityStudent | null> {
+    const result = await this.client.query(
+      "SELECT * FROM activity_student WHERE activity_id = $1 AND student_id = $2", 
+      [activity_id, student_id]
+    );
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    return result.rows[0];
+  }
+
+  async findByActivityIds(activityIds: string[]): Promise<ActivityStudent[]> {
+    if (activityIds.length === 0) return [];
+    const placeholders = activityIds.map((_, i) => `$${i + 1}`).join(',');
+    const result = await this.client.query(`SELECT * FROM activity_student WHERE activity_id IN (${placeholders})`, activityIds);
     return result.rows;
   }
 } 
