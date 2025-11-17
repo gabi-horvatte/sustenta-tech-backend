@@ -8,9 +8,9 @@
     "build": "tsc && tsc-alias",
     "test": "vitest run",
     "test:watch": "vitest",
-    "migrate:create": "node-pg-migrate -f src/database/config.json -m src/database/migrations create -j sql",
-    "migrate:run": "node-pg-migrate -f src/database/config.json -m src/database/migrations up",
-    "migrate:rollback": "node-pg-migrate -f src/database/config.json -m src/database/migrations down"
+    "migrate:create": "node-pg-migrate -m src/database/migrations create -j sql",
+    "migrate:run": "node-pg-migrate -m src/database/migrations up",
+    "migrate:rollback": "node-pg-migrate -m src/database/migrations down"
   },
   "devDependencies": {
     "@types/bcrypt": "^6",
