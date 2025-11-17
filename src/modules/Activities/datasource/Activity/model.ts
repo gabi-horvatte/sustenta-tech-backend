@@ -1,6 +1,5 @@
 export type Activity = {
   id: string;
-  url: string;
   name: string;
   description: string;
   created_at: Date;
@@ -8,4 +7,5 @@ export type Activity = {
   classroom_id: string;
   teacher_id: string;
   expires_at: Date;
+  activity_template_id: string;
 };

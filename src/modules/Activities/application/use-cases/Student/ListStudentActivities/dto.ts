@@ -7,4 +7,4 @@ export const listStudentActivitiesInputSchema = z.object({
 
 export type ListStudentActivitiesInput = z.infer<typeof listStudentActivitiesInputSchema>;
 
-export type ListStudentActivitiesOutput = (Omit<ActivityStudent, 'created_at' | 'updated_at'> & { activity_name: string, expires_at: Date, description: string, url: string })[];
+export type ListStudentActivitiesOutput = (Omit<ActivityStudent, 'created_at' | 'updated_at'> & { activity_name: string, expires_at: Date, description: string, activity_template_id: string })[];

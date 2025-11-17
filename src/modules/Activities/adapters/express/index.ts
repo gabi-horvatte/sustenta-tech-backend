@@ -25,6 +25,14 @@ import AccountGateway from '@/modules/Authentication/datasource/Account/gateway'
 import ListStudentActivitiesController from './list-student-activities';
 import ListStudentActivities from '../../application/use-cases/Student/ListStudentActivities';
 import ClassroomGateway from '@/modules/Classroom/datasource/Classroom/gateway';
+import ListStudentActivitiesWithScores from '../../application/use-cases/Student/ListStudentActivitiesWithScores';
+import ListStudentActivitiesWithScoresController from './list-student-activities-with-scores';
+import StudentAnswerGateway from '@/modules/ActivityTemplates/datasource/StudentAnswer/gateway';
+import QuestionGateway from '@/modules/ActivityTemplates/datasource/Question/gateway';
+import GetActivityReview from '../../application/use-cases/GetActivityReview';
+import GetActivityReviewController from './get-activity-review';
+import ActivityTemplateGateway from '@/modules/ActivityTemplates/datasource/ActivityTemplate/gateway';
+import QuestionOptionGateway from '@/modules/ActivityTemplates/datasource/QuestionOption/gateway';
 
 export const setupActivitiesRoutes = (router: Router) => {
   router.put("/activity/:activity_id", asyncHandler(async (req, res, next) => {
@@ -80,5 +88,37 @@ export const setupActivitiesRoutes = (router: Router) => {
     const accountGateway = new AccountGateway(req.dbClient);
     const studentGateway = new StudentGateway(req.dbClient);
     await new ListActivityStudentsController(new ListActivityStudents(activityGateway, activityStudentGateway, accountGateway, studentGateway), new GetActivityStudent(activityStudentGateway)).handle(req, res);
+  }));
+
+  router.get('/activity_student_with_scores', asyncHandler(async (req, res, next) => {
+    const activityGateway = new ActivityGateway(req.dbClient);
+    const activityStudentGateway = new ActivityStudentGateway(req.dbClient);
+    const studentGateway = new StudentGateway(req.dbClient);
+    const studentAnswerGateway = new StudentAnswerGateway(req.dbClient);
+    const questionGateway = new QuestionGateway(req.dbClient);
+    await new ListStudentActivitiesWithScoresController(
+      new ListStudentActivitiesWithScores(activityGateway, activityStudentGateway, studentGateway, studentAnswerGateway, questionGateway)
+    ).handle(req, res);
+  }));
+
+  router.get('/activity/:activity_id/review', asyncHandler(async (req, res, next) => {
+    const activityGateway = new ActivityGateway(req.dbClient);
+    const activityStudentGateway = new ActivityStudentGateway(req.dbClient);
+    const activityTemplateGateway = new ActivityTemplateGateway(req.dbClient);
+    const questionGateway = new QuestionGateway(req.dbClient);
+    const questionOptionGateway = new QuestionOptionGateway(req.dbClient);
+    const studentAnswerGateway = new StudentAnswerGateway(req.dbClient);
+    const accountGateway = new AccountGateway(req.dbClient);
+    await new GetActivityReviewController(
+      new GetActivityReview(
+        activityGateway,
+        activityStudentGateway,
+        activityTemplateGateway,
+        questionGateway,
+        questionOptionGateway,
+        studentAnswerGateway,
+        accountGateway
+      )
+    ).handle(req, res);
   }));
 };

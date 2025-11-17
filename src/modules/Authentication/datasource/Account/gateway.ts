@@ -25,6 +25,11 @@ export default class AccountGateway implements TableDataGateway<Account, { id: s
     return result.rows[0];
   }
 
+  async findByRole(role: string): Promise<Account[]> {
+    const result = await this.client.query("SELECT * FROM account WHERE role = $1", [role]);
+    return result.rows;
+  }
+
   async delete(identifier: { id: string }): Promise<void> {
     await this.client.query("DELETE FROM account WHERE id = $1", [identifier.id]);
   }

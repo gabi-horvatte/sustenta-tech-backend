@@ -9,7 +9,9 @@ import { authenticationMiddleware } from "./middlewares/authentication";
 import { setupActivitiesRoutes } from '@/modules/Activities/adapters/express';
 import { setupNotificationsRoutes } from '@/modules/Notifications/adapters/express';
 import cors from 'cors';
-import { setupMaterialsRoutes } from '@/modules/Materials/adapters/express';
+import { setupActivityTemplatesRoutes } from '@/modules/ActivityTemplates/adapters/express';
+import { setupMaterialTemplatesRoutes } from '@/modules/MaterialTemplates/adapters/express';
+import { setupAnalyticsRoutes } from '@/modules/Analytics/adapters/express';
 import { transactionEndMiddleware, transactionErrorMiddleware } from './middlewares/transaction-end';
 
 export default class ExpressServer {
@@ -45,6 +47,8 @@ export default class ExpressServer {
     setupAuthenticationRoutes(app);
     setupActivitiesRoutes(app);
     setupNotificationsRoutes(app);
-    setupMaterialsRoutes(app);
+    setupActivityTemplatesRoutes(app);
+    setupMaterialTemplatesRoutes(app);
+    setupAnalyticsRoutes(app);
   }
 }
