@@ -23,3 +23,4 @@ export type GetMaterialAssignmentDetailOutput = {
     completed_at: Date | null;
   }[];
 } | null;
+

@@ -23,6 +23,10 @@ import GetClassroomController from "./classroom/get";
 import GetClassroom from "../../application/use-cases/GetClassroom";
 import GetStudentController from "./student/get";
 import GetStudent from "../../application/use-cases/GetStudent";
+import UpdateStudentController from "./student/update";
+import UpdateStudent from "../../application/use-cases/Manager/UpdateStudent";
+import DeleteStudentController from "./student/delete";
+import DeleteStudent from "../../application/use-cases/Manager/DeleteStudent";
 import GetTeacherController from './teacher/get';
 import GetTeacher from "../../application/use-cases/Teacher/GetTeacher";
 
@@ -36,6 +40,18 @@ export const setupClassroomRoutes = (router: Router) => {
   router.get("/student/:student_id", asyncHandler(async (req, res, next) => {
     const studentGateway = new StudentGateway(req.dbClient);
     await new GetStudentController(new GetStudent(studentGateway)).handle(req, res);
+  }));
+
+  router.put("/student/:student_id", asyncHandler(async (req, res, next) => {
+    const studentGateway = new StudentGateway(req.dbClient);
+    const accountGateway = new AccountGateway(req.dbClient);
+    await new UpdateStudentController(new UpdateStudent(studentGateway, accountGateway)).handle(req, res);
+  }));
+
+  router.delete("/student/:student_id", asyncHandler(async (req, res, next) => {
+    const studentGateway = new StudentGateway(req.dbClient);
+    const accountGateway = new AccountGateway(req.dbClient);
+    await new DeleteStudentController(new DeleteStudent(studentGateway, accountGateway)).handle(req, res);
   }));
 
   router.get("/student", asyncHandler(async (req, res, next) => {
@@ -58,7 +74,8 @@ export const setupClassroomRoutes = (router: Router) => {
 
   router.post("/classroom", asyncHandler(async (req, res, next) => {
     const classroomGateway = new ClassroomGateway(req.dbClient);
-    await new CreateClassroomController(new CreateClassroom(classroomGateway)).handle(req, res);
+    const classroomTeacherGateway = new ClassroomTeacherGateway(req.dbClient);
+    await new CreateClassroomController(new CreateClassroom(classroomGateway, classroomTeacherGateway)).handle(req, res);
   }));
 
   router.get("/classroom", asyncHandler(async (req, res, next) => {

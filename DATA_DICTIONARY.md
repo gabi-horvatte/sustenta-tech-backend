@@ -432,3 +432,4 @@ account (1) ←→ (N) notification (como criador)
 ---
 
 *Este dicionário de dados representa a estrutura completa do banco de dados SustentaTech, projetado para suportar uma plataforma educacional robusta e escalável focada em sustentabilidade e educação ambiental.*
+

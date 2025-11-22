@@ -10,7 +10,7 @@ export default class StudentGateway implements TableDataGateway<Student, { id: s
   }
 
   async update(data: Omit<Student, 'created_at' | 'updated_at'>): Promise<void> {
-    await this.client.query("UPDATE student SET classroom_id = $1, updated_at = $2 WHERE id = $3", [data.classroom_id, new Date(), data.id]);
+    await this.client.query("UPDATE student SET classroom_id = $1, code = $2, updated_at = $3 WHERE id = $4", [data.classroom_id, data.code, new Date(), data.id]);
   }
 
   async findById(identifier: { id: string }): Promise<Student | null> {

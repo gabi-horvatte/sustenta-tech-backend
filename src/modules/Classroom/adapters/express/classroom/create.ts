@@ -8,7 +8,10 @@ export default class CreateClassroomController {
 
   @hasRole('TEACHER')
   async handle(req: Request, res: Response, next?: NextFunction) {
-    const validatedInput = createClassroomInputSchema.parse(req.body);
+    const validatedInput = createClassroomInputSchema.parse({
+      ...req.body,
+      teacher_id: req.account!.id,
+    });
     const result = await this.createClassroom.execute(validatedInput);
     res.status(201).json(result);
   }

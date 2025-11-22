@@ -43,3 +43,4 @@ export type GetActivityReviewOutput = {
     is_correct: boolean;
   }[];
 } | null;
+

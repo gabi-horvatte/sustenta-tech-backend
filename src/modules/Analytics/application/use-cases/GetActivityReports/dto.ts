@@ -56,3 +56,4 @@ export type GetActivityReportsOutput = {
     unique_students: number;
   }[];
 };
+

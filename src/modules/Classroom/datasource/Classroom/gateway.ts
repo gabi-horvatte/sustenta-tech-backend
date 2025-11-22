@@ -40,4 +40,13 @@ export default class ClassroomGateway implements TableDataGateway<Classroom, { i
     const result = await this.client.query("SELECT * FROM classroom");
     return result.rows;
   }
+
+  async findByTeacherId(identifier: { teacher_id: string }): Promise<Classroom[]> {
+    const result = await this.client.query(`
+      SELECT * FROM classroom 
+      INNER JOIN classroom_teacher ON classroom.id = classroom_teacher.classroom_id
+      WHERE classroom_teacher.teacher_id = $1
+    `, [identifier.teacher_id]);
+    return result.rows;
+  }
 }

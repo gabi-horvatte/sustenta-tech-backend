@@ -6,9 +6,9 @@ export default class GetClassroomListController {
   constructor(private readonly getClassroomList: GetClassroomList) { }
 
   @hasRole('TEACHER')
-  async handle(_req: Request, res: Response) {
+  async handle(req: Request, res: Response) {
     console.log('get classroom list controller');
-    const result = await this.getClassroomList.execute();
+    const result = await this.getClassroomList.execute({ teacher_id: req.account!.id });
     console.log('get classroom list result', result);
     res.status(200).json(result);
   }

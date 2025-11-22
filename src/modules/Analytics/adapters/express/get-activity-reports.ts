@@ -17,3 +17,4 @@ export default class GetActivityReportsController {
     res.json(result);
   }
 }
+

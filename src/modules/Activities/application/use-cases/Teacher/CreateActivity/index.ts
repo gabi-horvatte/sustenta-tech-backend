@@ -51,8 +51,8 @@ export default class CreateActivity extends UseCase<CreateActivityInput, CreateA
         this.notificationGateway.insert({
           id: uuid.v4(),
           account_id: student.id,
-          message: `Atividade ${input.name} criada`,
-          url: `/student/activities`,
+          message: `Nova atividade atribuída: "${input.name}"`,
+          url: `/student/quiz/${id}`,
           creation_reason: 'ACTIVITY_CREATED',
           created_by: input.teacher_id,
           read_at: null,

@@ -12,6 +12,8 @@ import NotificationGateway from '@/modules/Notifications/datasource/Notification
 
 // Use Cases
 import CreateMaterialTemplate from '../../application/use-cases/CreateMaterialTemplate';
+import UpdateMaterialTemplate from '../../application/use-cases/UpdateMaterialTemplate';
+import GetMaterialTemplate from '../../application/use-cases/GetMaterialTemplate';
 import ListMaterialTemplates from '../../application/use-cases/ListMaterialTemplates';
 import AssignMaterial from '../../application/use-cases/AssignMaterial';
 import CompleteMaterial from '../../application/use-cases/CompleteMaterial';
@@ -19,6 +21,8 @@ import ListStudentMaterials from '../../application/use-cases/ListStudentMateria
 
 // Controllers
 import CreateMaterialTemplateController from './create-material-template';
+import UpdateMaterialTemplateController from './update-material-template';
+import GetMaterialTemplateController from './get-material-template';
 import ListMaterialTemplatesController from './list-material-templates';
 import AssignMaterialController from './assign-material';
 import CompleteMaterialController from './complete-material';
@@ -32,12 +36,30 @@ export const setupMaterialTemplatesRoutes = (router: Router) => {
   // Create material template
   router.post("/material-template", asyncHandler(async (req, res) => {
     const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
-    
+
     const notificationGateway = new NotificationGateway(req.dbClient);
     const accountGateway = new AccountGateway(req.dbClient);
-    
+
     await new CreateMaterialTemplateController(
       new CreateMaterialTemplate(materialTemplateGateway, notificationGateway, accountGateway)
+    ).handle(req, res);
+  }));
+
+  // Get material template by ID
+  router.get("/material-template/:id", asyncHandler(async (req, res) => {
+    const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
+
+    await new GetMaterialTemplateController(
+      new GetMaterialTemplate(materialTemplateGateway)
+    ).handle(req, res);
+  }));
+
+  // Update material template
+  router.put("/material-template/:id", asyncHandler(async (req, res) => {
+    const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
+
+    await new UpdateMaterialTemplateController(
+      new UpdateMaterialTemplate(materialTemplateGateway)
     ).handle(req, res);
   }));
 

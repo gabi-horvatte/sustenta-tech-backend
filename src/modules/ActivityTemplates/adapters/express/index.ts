@@ -15,6 +15,7 @@ import ClassroomGateway from '@/modules/Classroom/datasource/Classroom/gateway';
 
 // Use Cases
 import CreateActivityTemplate from '../../application/use-cases/CreateActivityTemplate';
+import UpdateActivityTemplate from '../../application/use-cases/UpdateActivityTemplate';
 import ListActivityTemplates from '../../application/use-cases/ListActivityTemplates';
 import GetActivityTemplate from '../../application/use-cases/GetActivityTemplate';
 import SubmitStudentAnswers from '../../application/use-cases/SubmitStudentAnswers';
@@ -22,6 +23,7 @@ import GetStudentProgress from '../../application/use-cases/GetStudentProgress';
 
 // Controllers
 import CreateActivityTemplateController from './create-activity-template';
+import UpdateActivityTemplateController from './update-activity-template';
 import ListActivityTemplatesController from './list-activity-templates';
 import GetActivityTemplateController from './get-activity-template';
 import SubmitStudentAnswersController from './submit-student-answers';
@@ -57,9 +59,20 @@ export const setupActivityTemplatesRoutes = (router: Router) => {
     const activityTemplateGateway = new ActivityTemplateGateway(req.dbClient);
     const questionGateway = new QuestionGateway(req.dbClient);
     const questionOptionGateway = new QuestionOptionGateway(req.dbClient);
-    
+
     await new GetActivityTemplateController(
       new GetActivityTemplate(activityTemplateGateway, questionGateway, questionOptionGateway)
+    ).handle(req, res);
+  }));
+
+  // Update activity template
+  router.put("/activity-template/:id", asyncHandler(async (req, res) => {
+    const activityTemplateGateway = new ActivityTemplateGateway(req.dbClient);
+    const questionGateway = new QuestionGateway(req.dbClient);
+    const questionOptionGateway = new QuestionOptionGateway(req.dbClient);
+
+    await new UpdateActivityTemplateController(
+      new UpdateActivityTemplate(activityTemplateGateway, questionGateway, questionOptionGateway)
     ).handle(req, res);
   }));
 

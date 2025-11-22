@@ -383,3 +383,4 @@ export default class GetMaterialReports extends UseCase<GetMaterialReportsInput,
       .sort((a, b) => a.month.localeCompare(b.month));
   }
 }
+

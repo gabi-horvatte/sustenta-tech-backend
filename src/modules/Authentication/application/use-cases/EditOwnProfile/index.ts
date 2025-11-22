@@ -14,7 +14,7 @@ export default class EditOwnProfile extends UseCase<EditOwnProfileInput, EditOwn
   async execute(input: EditOwnProfileInput): Promise<EditOwnProfileOutput> {
     const id = input.id || uuid.v4();
 
-    const account: Omit<Account, 'created_at' | 'updated_at'> = {
+    const account: Omit<Account, 'created_at' | 'updated_at' | 'deleted_at'> = {
       id,
       name: input.name,
       last_name: input.last_name,

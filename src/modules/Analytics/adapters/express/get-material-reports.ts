@@ -17,3 +17,4 @@ export default class GetMaterialReportsController {
     res.json(result);
   }
 }
+

@@ -3,6 +3,7 @@ import { Pool, PoolClient } from 'pg';
 import * as uuid from 'uuid';
 import CreateClassroom from "./index";
 import ClassroomGateway from '@/modules/Classroom/datasource/Classroom/gateway';
+import ClassroomTeacherGateway from '@/modules/Classroom/datasource/ClassroomTeacher/gateway';
 
 describe("CreateClassroom", () => {
   let pool: Pool;
@@ -12,7 +13,7 @@ describe("CreateClassroom", () => {
     classroomName: string;
   };
   let classroomGateway: ClassroomGateway;
-
+  let classroomTeacherGateway: ClassroomTeacherGateway;
   beforeAll(async () => {
     // @ts-expect-error - pool is not defined in the global scope
     pool = global.pool;
@@ -22,12 +23,15 @@ describe("CreateClassroom", () => {
     // Execute the use case and store result globally
 
     classroomGateway = new ClassroomGateway(client);
-    const useCase = new CreateClassroom(classroomGateway);
+    classroomTeacherGateway = new ClassroomTeacherGateway(client);
+    const useCase = new CreateClassroom(classroomGateway, classroomTeacherGateway);
     const classroomName = "Test Classroom";
+    const teacherId = uuid.v4();
 
     const result = await useCase.execute({
       name: classroomName,
       description: "Test description",
+      teacher_id: teacherId,
     });
 
     globalResult = {
@@ -71,17 +75,20 @@ describe("CreateClassroom", () => {
   });
 
   it("should create classroom with provided ID when ID is given", async () => {
-    const useCase = new CreateClassroom(classroomGateway);
+    const useCase = new CreateClassroom(classroomGateway, classroomTeacherGateway);
     const customId = uuid.v4();
+    const teacherId = uuid.v4();
 
     const result = await useCase.execute({
       id: customId,
       name: "Custom ID Classroom",
       description: "Test description",
+      teacher_id: teacherId,
     });
 
     expect(result.id).toBe(customId);
     expect(result.name).toBe("Custom ID Classroom");
+    expect(result.teacher_id).toBe(teacherId);
 
     // Verify in database
     const dbResult = await client.query(

@@ -7,4 +7,7 @@ export type Account = {
   phone: string;
   birth_date: Date;
   role: 'STUDENT' | 'TEACHER';
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date | null;
 };
