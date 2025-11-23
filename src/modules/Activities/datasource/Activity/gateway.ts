@@ -47,7 +47,11 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
   }
 
   async findById(identifier: { id: string }): Promise<Activity | null> {
-    const result = await this.client.query("SELECT * FROM activity WHERE id = $1 AND deleted_at IS NULL", [identifier.id]);
+    const result = await this.client.query(`
+      SELECT * FROM activity 
+      INNER JOIN activity_template ON activity.activity_template_id = activity_template.id
+      WHERE activity.id = $1 AND activity.deleted_at IS NULL AND activity_template.deleted_at IS NULL
+    `, [identifier.id]);
 
     if (result.rows.length === 0)
       return null;
@@ -56,7 +60,12 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
   }
 
   async findByTeacherId(teacherId: string): Promise<Activity[]> {
-    const result = await this.client.query("SELECT * FROM activity WHERE teacher_id = $1 AND deleted_at IS NULL ORDER BY created_at DESC", [teacherId]);
+    const result = await this.client.query(`
+      SELECT * FROM activity 
+      INNER JOIN activity_template ON activity.activity_template_id = activity_template.id
+      WHERE activity.teacher_id = $1 AND activity.deleted_at IS NULL AND activity_template.deleted_at IS NULL
+      ORDER BY activity.created_at DESC
+    `, [teacherId]);
     return result.rows;
   }
 
@@ -65,13 +74,21 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
   }
 
   async findByIds(identifiers: { id: string }[]): Promise<Activity[]> {
-    const result = await this.client.query("SELECT * FROM activity WHERE id = ANY($1) AND deleted_at IS NULL", [identifiers.map((identifier) => identifier.id)]);
+    const result = await this.client.query(`
+      SELECT * FROM activity 
+      INNER JOIN activity_template ON activity.activity_template_id = activity_template.id
+      WHERE activity.id = ANY($1) AND activity.deleted_at IS NULL AND activity_template.deleted_at IS NULL
+    `, [identifiers.map((identifier) => identifier.id)]);
 
     return result.rows;
   }
 
   async findByClassroomId(identifier: { classroomId: string }): Promise<Activity[]> {
-    const result = await this.client.query("SELECT * FROM activity WHERE classroom_id = $1 AND deleted_at IS NULL", [identifier.classroomId]);
+    const result = await this.client.query(`
+      SELECT * FROM activity 
+      INNER JOIN activity_template ON activity.activity_template_id = activity_template.id
+      WHERE activity.classroom_id = $1 AND activity.deleted_at IS NULL AND activity_template.deleted_at IS NULL
+    `, [identifier.classroomId]);
 
     return result.rows;
   }
