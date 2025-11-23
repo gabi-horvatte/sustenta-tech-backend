@@ -79,7 +79,7 @@ export default class ActivityStudentGateway implements TableDataGateway<Activity
     if (activityIds.length === 0) return [];
     const placeholders = activityIds.map((_, i) => `$${i + 1}`).join(',');
     const result = await this.client.query(`
-      SELECT * FROM activity_student 
+      SELECT activity_student.* FROM activity_student 
       JOIN activity ON activity_student.activity_id = activity.id
       JOIN activity_template ON activity.activity_template_id = activity_template.id
       WHERE activity_student.activity_id IN (${placeholders}) AND activity.deleted_at IS NULL AND activity_template.deleted_at IS NULL

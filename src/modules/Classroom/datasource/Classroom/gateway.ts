@@ -43,7 +43,7 @@ export default class ClassroomGateway implements TableDataGateway<Classroom, { i
 
   async findByTeacherId(identifier: { teacher_id: string }): Promise<Classroom[]> {
     const result = await this.client.query(`
-      SELECT * FROM classroom 
+      SELECT classroom.* FROM classroom 
       INNER JOIN classroom_teacher ON classroom.id = classroom_teacher.classroom_id
       WHERE classroom_teacher.teacher_id = $1
     `, [identifier.teacher_id]);

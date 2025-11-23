@@ -42,7 +42,7 @@ export default class QuestionOptionGateway implements TableDataGateway<QuestionO
 
   async findByQuestionIds(questionIds: string[]): Promise<QuestionOption[]> {
     if (questionIds.length === 0) return [];
-    
+
     const placeholders = questionIds.map((_, index) => `$${index + 1}`).join(',');
     const result = await this.client.query(
       `SELECT * FROM question_option WHERE question_id IN (${placeholders}) ORDER BY question_id, option_order ASC`,

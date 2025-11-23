@@ -29,6 +29,7 @@ import DeleteStudentController from "./student/delete";
 import DeleteStudent from "../../application/use-cases/Manager/DeleteStudent";
 import GetTeacherController from './teacher/get';
 import GetTeacher from "../../application/use-cases/Teacher/GetTeacher";
+import ListAllClassrooms from "../../application/use-cases/Manager/ListAllClassrooms";
 
 export const setupClassroomRoutes = (router: Router) => {
   router.post("/student", asyncHandler(async (req, res, next) => {
@@ -80,7 +81,7 @@ export const setupClassroomRoutes = (router: Router) => {
 
   router.get("/classroom", asyncHandler(async (req, res, next) => {
     const classroomGateway = new ClassroomGateway(req.dbClient);
-    await new GetClassroomListController(new GetClassroomList(classroomGateway)).handle(req, res);
+    await new GetClassroomListController(new GetClassroomList(classroomGateway), new ListAllClassrooms(classroomGateway)).handle(req, res);
   }));
 
   router.put("/classroom/:classroom_id", asyncHandler(async (req, res, next) => {
