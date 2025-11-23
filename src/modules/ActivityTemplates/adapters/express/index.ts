@@ -37,10 +37,10 @@ export const setupActivityTemplatesRoutes = (router: Router) => {
     const activityTemplateGateway = new ActivityTemplateGateway(req.dbClient);
     const questionGateway = new QuestionGateway(req.dbClient);
     const questionOptionGateway = new QuestionOptionGateway(req.dbClient);
-    
+
     const notificationGateway = new NotificationGateway(req.dbClient);
     const accountGateway = new AccountGateway(req.dbClient);
-    
+
     await new CreateActivityTemplateController(
       new CreateActivityTemplate(activityTemplateGateway, questionGateway, questionOptionGateway, notificationGateway, accountGateway)
     ).handle(req, res);
@@ -50,7 +50,7 @@ export const setupActivityTemplatesRoutes = (router: Router) => {
   router.get("/activity-template", asyncHandler(async (req, res) => {
     const activityTemplateGateway = new ActivityTemplateGateway(req.dbClient);
     const questionGateway = new QuestionGateway(req.dbClient);
-    
+
     await new ListActivityTemplatesController(
       new ListActivityTemplates(activityTemplateGateway, questionGateway)
     ).handle(req, res);
@@ -96,7 +96,7 @@ export const setupActivityTemplatesRoutes = (router: Router) => {
     const notificationGateway = new NotificationGateway(req.dbClient);
     const accountGateway = new AccountGateway(req.dbClient);
     const classroomGateway = new ClassroomGateway(req.dbClient);
-    
+
     await new SubmitStudentAnswersController(
       new SubmitStudentAnswers(studentAnswerGateway, questionOptionGateway, activityGateway, activityStudentGateway, notificationGateway, accountGateway, classroomGateway)
     ).handle(req, res);
@@ -110,7 +110,7 @@ export const setupActivityTemplatesRoutes = (router: Router) => {
     const studentGateway = new StudentGateway(req.dbClient);
     const accountGateway = new AccountGateway(req.dbClient);
     const questionGateway = new QuestionGateway(req.dbClient);
-    
+
     await new GetStudentProgressController(
       new GetStudentProgress(activityGateway, studentAnswerGateway, activityStudentGateway, studentGateway, accountGateway, questionGateway)
     ).handle(req, res);
