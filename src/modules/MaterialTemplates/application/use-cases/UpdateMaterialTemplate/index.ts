@@ -48,3 +48,4 @@ export default class UpdateMaterialTemplate extends UseCase<UpdateMaterialTempla
     };
   }
 }
+

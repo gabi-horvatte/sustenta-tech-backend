@@ -8,4 +8,5 @@ export type Activity = {
   teacher_id: string;
   expires_at: Date;
   activity_template_id: string;
+  deleted_at: Date | null;
 };

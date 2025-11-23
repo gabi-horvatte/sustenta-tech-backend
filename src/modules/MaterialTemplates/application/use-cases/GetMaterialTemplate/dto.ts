@@ -18,3 +18,4 @@ export type GetMaterialTemplateOutput = {
   created_at: Date;
   updated_at: Date;
 };
+

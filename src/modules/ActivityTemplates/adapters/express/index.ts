@@ -20,6 +20,7 @@ import ListActivityTemplates from '../../application/use-cases/ListActivityTempl
 import GetActivityTemplate from '../../application/use-cases/GetActivityTemplate';
 import SubmitStudentAnswers from '../../application/use-cases/SubmitStudentAnswers';
 import GetStudentProgress from '../../application/use-cases/GetStudentProgress';
+import DeleteActivityTemplate from '../../application/use-cases/DeleteActivityTemplate';
 
 // Controllers
 import CreateActivityTemplateController from './create-activity-template';
@@ -28,6 +29,7 @@ import ListActivityTemplatesController from './list-activity-templates';
 import GetActivityTemplateController from './get-activity-template';
 import SubmitStudentAnswersController from './submit-student-answers';
 import GetStudentProgressController from './get-student-progress';
+import DeleteActivityTemplateController from './delete-activity-template';
 
 export const setupActivityTemplatesRoutes = (router: Router) => {
   // Create activity template
@@ -73,6 +75,15 @@ export const setupActivityTemplatesRoutes = (router: Router) => {
 
     await new UpdateActivityTemplateController(
       new UpdateActivityTemplate(activityTemplateGateway, questionGateway, questionOptionGateway)
+    ).handle(req, res);
+  }));
+
+  // Delete activity template
+  router.delete("/activity-template/:id", asyncHandler(async (req, res) => {
+    const activityTemplateGateway = new ActivityTemplateGateway(req.dbClient);
+
+    await new DeleteActivityTemplateController(
+      new DeleteActivityTemplate(activityTemplateGateway)
     ).handle(req, res);
   }));
 

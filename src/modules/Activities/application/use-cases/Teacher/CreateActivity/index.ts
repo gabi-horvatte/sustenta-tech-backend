@@ -1,5 +1,6 @@
 import UseCase from '@/modules/shared/base-use-case';
 import ActivityGateway from '@/modules/Activities/datasource/Activity/gateway';
+import ActivityTemplateGateway from '@/modules/ActivityTemplates/datasource/ActivityTemplate/gateway';
 import { CreateActivityInput, CreateActivityOutput } from './dto';
 import { Activity } from '@/modules/Activities/datasource/Activity/model';
 import * as uuid from 'uuid';
@@ -10,6 +11,7 @@ import ClassroomGateway from '@/modules/Classroom/datasource/Classroom/gateway';
 export default class CreateActivity extends UseCase<CreateActivityInput, CreateActivityOutput> {
   constructor(
     private readonly activityGateway: ActivityGateway,
+    private readonly activityTemplateGateway: ActivityTemplateGateway,
     private readonly studentGateway: StudentGateway,
     private readonly classroomGateway: ClassroomGateway,
     private readonly notificationGateway: NotificationGateway
@@ -24,7 +26,11 @@ export default class CreateActivity extends UseCase<CreateActivityInput, CreateA
     if (!classroom)
       throw new Error('Classroom not found');
 
-    const activity: Omit<Activity, 'created_at' | 'updated_at'> = {
+    const activityTemplate = await this.activityTemplateGateway.findById({ id: input.activity_template_id });
+    if (!activityTemplate)
+      throw new Error('Activity template not found');
+
+    const activity: Omit<Activity, 'created_at' | 'updated_at' | 'deleted_at'> = {
       id,
       name: input.name,
       description: input.description,

@@ -31,6 +31,8 @@ import ListMaterialAssignments from '../../application/use-cases/ListMaterialAss
 import ListMaterialAssignmentsController from './list-material-assignments';
 import GetMaterialAssignmentDetail from '../../application/use-cases/GetMaterialAssignmentDetail';
 import GetMaterialAssignmentDetailController from './get-material-assignment-detail';
+import DeleteMaterialTemplate from '../../application/use-cases/DeleteMaterialTemplate';
+import DeleteMaterialTemplateController from './delete-material-template';
 
 export const setupMaterialTemplatesRoutes = (router: Router) => {
   // Create material template
@@ -60,6 +62,15 @@ export const setupMaterialTemplatesRoutes = (router: Router) => {
 
     await new UpdateMaterialTemplateController(
       new UpdateMaterialTemplate(materialTemplateGateway)
+    ).handle(req, res);
+  }));
+
+  // Delete material template
+  router.delete("/material-template/:id", asyncHandler(async (req, res) => {
+    const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
+
+    await new DeleteMaterialTemplateController(
+      new DeleteMaterialTemplate(materialTemplateGateway)
     ).handle(req, res);
   }));
 

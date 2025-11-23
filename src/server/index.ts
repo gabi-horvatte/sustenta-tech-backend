@@ -13,6 +13,7 @@ import { setupActivityTemplatesRoutes } from '@/modules/ActivityTemplates/adapte
 import { setupMaterialTemplatesRoutes } from '@/modules/MaterialTemplates/adapters/express';
 import { setupAnalyticsRoutes } from '@/modules/Analytics/adapters/express';
 import { transactionEndMiddleware, transactionErrorMiddleware } from './middlewares/transaction-end';
+import { setupMaterialsRoutes } from '@/modules/Materials/adapters/express';
 
 export default class ExpressServer {
   async start() {
@@ -75,5 +76,6 @@ export default class ExpressServer {
     setupActivityTemplatesRoutes(app);
     setupMaterialTemplatesRoutes(app);
     setupAnalyticsRoutes(app);
+    setupMaterialsRoutes(app);
   }
 }

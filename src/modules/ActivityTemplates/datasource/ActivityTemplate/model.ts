@@ -5,4 +5,5 @@ export type ActivityTemplate = {
   created_by: string;
   created_at: Date;
   updated_at: Date;
+  deleted_at: Date | null;
 };

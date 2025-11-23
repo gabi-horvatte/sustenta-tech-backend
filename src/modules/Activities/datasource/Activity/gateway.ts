@@ -5,7 +5,7 @@ import { Activity } from "./model";
 export default class ActivityGateway implements TableDataGateway<Activity, { id: string }> {
   constructor(private readonly client: PoolClient) { }
 
-  async insert(data: Omit<Activity, 'created_at' | 'updated_at'>): Promise<void> {
+  async insert(data: Omit<Activity, 'created_at' | 'updated_at' | 'deleted_at'>): Promise<void> {
     await this.client.query(`
       INSERT INTO activity (
         id,
@@ -14,8 +14,9 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
         classroom_id,
         teacher_id,
         expires_at,
-        activity_template_id
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7)
+        activity_template_id,
+        deleted_at
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
     `,
       [
         data.id,
@@ -24,11 +25,12 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
         data.classroom_id,
         data.teacher_id,
         data.expires_at,
-        data.activity_template_id
+        data.activity_template_id,
+        null
       ]);
   }
 
-  async update(data: Omit<Activity, 'created_at' | 'updated_at'>): Promise<void> {
+  async update(data: Omit<Activity, 'created_at' | 'updated_at' | 'deleted_at'>): Promise<void> {
     await this.client.query(`
       UPDATE activity SET name = $1, description = $2, classroom_id = $3, teacher_id = $4, expires_at = $5, activity_template_id = $6, updated_at = $7 WHERE id = $8
     `,
@@ -45,7 +47,7 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
   }
 
   async findById(identifier: { id: string }): Promise<Activity | null> {
-    const result = await this.client.query("SELECT * FROM activity WHERE id = $1", [identifier.id]);
+    const result = await this.client.query("SELECT * FROM activity WHERE id = $1 AND deleted_at IS NULL", [identifier.id]);
 
     if (result.rows.length === 0)
       return null;
@@ -54,22 +56,22 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
   }
 
   async findByTeacherId(teacherId: string): Promise<Activity[]> {
-    const result = await this.client.query("SELECT * FROM activity WHERE teacher_id = $1 ORDER BY created_at DESC", [teacherId]);
+    const result = await this.client.query("SELECT * FROM activity WHERE teacher_id = $1 AND deleted_at IS NULL ORDER BY created_at DESC", [teacherId]);
     return result.rows;
   }
 
   async delete(identifier: { id: string }): Promise<void> {
-    await this.client.query("DELETE FROM activity WHERE id = $1", [identifier.id]);
+    await this.client.query("UPDATE activity SET deleted_at = $1, updated_at = $1 WHERE id = $2", [new Date(), identifier.id]);
   }
 
   async findByIds(identifiers: { id: string }[]): Promise<Activity[]> {
-    const result = await this.client.query("SELECT * FROM activity WHERE id = ANY($1)", [identifiers.map((identifier) => identifier.id)]);
+    const result = await this.client.query("SELECT * FROM activity WHERE id = ANY($1) AND deleted_at IS NULL", [identifiers.map((identifier) => identifier.id)]);
 
     return result.rows;
   }
 
   async findByClassroomId(identifier: { classroomId: string }): Promise<Activity[]> {
-    const result = await this.client.query("SELECT * FROM activity WHERE classroom_id = $1", [identifier.classroomId]);
+    const result = await this.client.query("SELECT * FROM activity WHERE classroom_id = $1 AND deleted_at IS NULL", [identifier.classroomId]);
 
     return result.rows;
   }

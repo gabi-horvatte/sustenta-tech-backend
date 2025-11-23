@@ -3,4 +3,5 @@ export type Material = {
   student_id: string;
   created_at: Date;
   updated_at: Date;
+  deleted_at: Date | null;
 };

@@ -8,7 +8,10 @@ export default class CreateActivityController {
 
   @hasRole('TEACHER')
   async handle(req: Request, res: Response) {
-    const validatedInput = createActivityInputSchema.parse(req.body);
+    const validatedInput = createActivityInputSchema.parse({
+      ...req.body,
+      teacher_id: req.body.teacher_id || req.account?.id,
+    });
     const result = await this.createActivity.execute(validatedInput);
     res.status(200).json(result);
   }

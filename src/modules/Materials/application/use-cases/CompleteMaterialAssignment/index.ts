@@ -1,57 +1,55 @@
-import MaterialGateway from '@/modules/Materials/datasource/gateway.js';
 import { CompleteMaterialAssignmentInput, CompleteMaterialAssignmentOutput } from './dto.js';
 import UseCase from '@/modules/shared/base-use-case.js';
-import { Material } from '@/modules/Materials/datasource/model.js';
 import NotificationGateway from '@/modules/Notifications/datasource/Notification/gateway.js';
 import * as uuid from 'uuid';
-import { materialsContent } from '@/modules/Materials/datasource/content.js';
-import AccountGateway from '@/modules/Authentication/datasource/Account/gateway.js';
+import MaterialAssignmentGateway from '@/modules/MaterialTemplates/datasource/MaterialAssignment/gateway.js';
+import MaterialCompletionGateway from '@/modules/MaterialTemplates/datasource/MaterialCompletion/gateway.js';
+import { MaterialCompletion } from '@/modules/MaterialTemplates/datasource/MaterialCompletion/model.js';
 
 export default class CompleteMaterialAssignment extends UseCase<CompleteMaterialAssignmentInput, CompleteMaterialAssignmentOutput> {
   constructor(
-    private readonly materialGateway: MaterialGateway,
+    private readonly materialAssignmentGateway: MaterialAssignmentGateway,
+    private readonly materialCompletionGateway: MaterialCompletionGateway,
     private readonly notificationGateway: NotificationGateway,
-    private readonly accountGateway: AccountGateway
   ) { super(); }
 
   async execute(input: CompleteMaterialAssignmentInput): Promise<CompleteMaterialAssignmentOutput> {
-    const existingMaterial = await this.materialGateway.findById({ id: input.id, student_id: input.student_id });
 
-    if (existingMaterial)
+    const materialAssignment = await this.materialAssignmentGateway.findById({ id: input.id });
+    if (!materialAssignment)
+      throw new Error('Material assignment not found');
+
+    const existingMaterialCompletion = await this.materialCompletionGateway.findByMaterialAssignmentAndStudent(input.id, input.student_id);
+
+    if (existingMaterialCompletion)
       return {
-        id: existingMaterial.id,
-        student_id: existingMaterial.student_id,
-        completed_at: existingMaterial.created_at,
+        id: existingMaterialCompletion.id,
+        student_id: existingMaterialCompletion.student_id,
+        completed_at: existingMaterialCompletion.created_at,
       };
 
-    const material: Omit<Material, 'created_at' | 'updated_at'> = {
-      id: input.id,
+    const materialCompletion: Omit<MaterialCompletion, 'created_at' | 'updated_at' | 'deleted_at'> = {
+      id: uuid.v4(),
+      material_assignment_id: materialAssignment.id,
       student_id: input.student_id,
+      completed_at: new Date(),
     };
 
-    const materialContent = materialsContent.find((content) => content.id === input.id);
-    if (!materialContent)
-      throw new Error('Material not found');
-
-    const student = await this.accountGateway.findById({ id: input.student_id });
-    if (!student || student.role !== 'STUDENT')
-      throw new Error('Student not found');
-
-    await this.materialGateway.insert(material);
+    await this.materialCompletionGateway.insert(materialCompletion);
     await this.notificationGateway.insert({
       id: uuid.v4(),
-      account_id: material.student_id,
-      message: `Material ${materialContent.title} concluído por ${student.name} ${student.last_name}`,
-      url: '/management/materials',
+      account_id: materialAssignment.assigned_by,
+      message: `Material ${materialAssignment.material_template_id} concluído por ${input.student_id}`,
+      url: `/management/materials/`,
       creation_reason: 'MATERIAL_COMPLETED',
-      created_by: material.student_id,
+      created_by: input.student_id,
       read_at: null,
     });
 
     return {
-      id: material.id,
-      student_id: material.student_id,
-      completed_at: new Date(),
+      id: materialCompletion.id,
+      student_id: materialCompletion.student_id,
+      completed_at: materialCompletion.completed_at,
     };
   }
 }

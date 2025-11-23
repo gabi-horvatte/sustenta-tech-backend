@@ -57,10 +57,11 @@ export const setupActivitiesRoutes = (router: Router) => {
 
   router.post("/activity", asyncHandler(async (req, res, next) => {
     const activityGateway = new ActivityGateway(req.dbClient);
+    const activityTemplateGateway = new ActivityTemplateGateway(req.dbClient);
     const studentGateway = new StudentGateway(req.dbClient);
     const classroomGateway = new ClassroomGateway(req.dbClient);
     const notificationGateway = new NotificationGateway(req.dbClient);
-    await new CreateActivityController(new CreateActivity(activityGateway, studentGateway, classroomGateway, notificationGateway)).handle(req, res);
+    await new CreateActivityController(new CreateActivity(activityGateway, activityTemplateGateway, studentGateway, classroomGateway, notificationGateway)).handle(req, res);
   }));
 
   router.get("/activity", asyncHandler(async (req, res, next) => {

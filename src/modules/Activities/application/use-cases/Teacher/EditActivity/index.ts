@@ -18,7 +18,7 @@ export default class EditActivity extends UseCase<EditActivityInput, EditActivit
       throw new Error('Activity not found');
     }
 
-    const updatedActivity: Omit<Activity, 'created_at' | 'updated_at'> = {
+    const updatedActivity: Omit<Activity, 'created_at' | 'updated_at' | 'deleted_at'> = {
       id,
       name: input.name || activity.name,
       description: input.description || activity.description,

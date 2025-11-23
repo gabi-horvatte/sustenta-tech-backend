@@ -30,3 +30,4 @@ export default class GetMaterialTemplate extends UseCase<GetMaterialTemplateInpu
     };
   }
 }
+
