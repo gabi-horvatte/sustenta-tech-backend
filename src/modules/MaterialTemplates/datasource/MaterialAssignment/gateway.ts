@@ -34,7 +34,10 @@ export default class MaterialAssignmentGateway implements TableDataGateway<Mater
 
   async findByClassroomId(classroomId: string): Promise<MaterialAssignment[]> {
     const result = await this.client.query(
-      "SELECT * FROM material_assignment WHERE classroom_id = $1 ORDER BY created_at DESC",
+      `
+      SELECT * FROM material_assignment 
+      JOIN material_template ON material_assignment.material_template_id = material_template.id
+      WHERE classroom_id = $1 AND material_assignment.deleted_at IS NULL ORDER BY created_at DESC`,
       [classroomId]
     );
     return result.rows;
@@ -42,7 +45,9 @@ export default class MaterialAssignmentGateway implements TableDataGateway<Mater
 
   async findByAssignedBy(assignedBy: string): Promise<MaterialAssignment[]> {
     const result = await this.client.query(
-      "SELECT * FROM material_assignment WHERE assigned_by = $1 ORDER BY created_at DESC",
+      `SELECT * FROM material_assignment 
+      JOIN material_template ON material_assignment.material_template_id = material_template.id
+      WHERE assigned_by = $1 AND material_assignment.deleted_at IS NULL ORDER BY created_at DESC`,
       [assignedBy]
     );
     return result.rows;
@@ -50,7 +55,9 @@ export default class MaterialAssignmentGateway implements TableDataGateway<Mater
 
   async findAll(): Promise<MaterialAssignment[]> {
     const result = await this.client.query(
-      "SELECT * FROM material_assignment ORDER BY created_at DESC"
+      `SELECT * FROM material_assignment 
+      JOIN material_template ON material_assignment.material_template_id = material_template.id
+      WHERE material_assignment.deleted_at IS NULL ORDER BY created_at DESC`
     );
     return result.rows;
   }
