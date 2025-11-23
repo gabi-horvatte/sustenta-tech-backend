@@ -37,7 +37,7 @@ export default class MaterialAssignmentGateway implements TableDataGateway<Mater
       `
       SELECT * FROM material_assignment 
       JOIN material_template ON material_assignment.material_template_id = material_template.id
-      WHERE classroom_id = $1 AND material_assignment.deleted_at IS NULL ORDER BY created_at DESC`,
+      WHERE classroom_id = $1 AND material_assignment.deleted_at IS NULL ORDER BY material_assignment.created_at DESC`,
       [classroomId]
     );
     return result.rows;
@@ -47,7 +47,7 @@ export default class MaterialAssignmentGateway implements TableDataGateway<Mater
     const result = await this.client.query(
       `SELECT * FROM material_assignment 
       JOIN material_template ON material_assignment.material_template_id = material_template.id
-      WHERE assigned_by = $1 AND material_assignment.deleted_at IS NULL ORDER BY created_at DESC`,
+      WHERE assigned_by = $1 AND material_assignment.deleted_at IS NULL ORDER BY material_assignment.created_at DESC`,
       [assignedBy]
     );
     return result.rows;
@@ -57,7 +57,7 @@ export default class MaterialAssignmentGateway implements TableDataGateway<Mater
     const result = await this.client.query(
       `SELECT * FROM material_assignment 
       JOIN material_template ON material_assignment.material_template_id = material_template.id
-      WHERE material_assignment.deleted_at IS NULL ORDER BY created_at DESC`
+      WHERE material_assignment.deleted_at IS NULL ORDER BY material_assignment.created_at DESC`
     );
     return result.rows;
   }
