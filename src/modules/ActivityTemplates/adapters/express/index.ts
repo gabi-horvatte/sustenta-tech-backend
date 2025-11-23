@@ -110,9 +110,10 @@ export const setupActivityTemplatesRoutes = (router: Router) => {
     const studentGateway = new StudentGateway(req.dbClient);
     const accountGateway = new AccountGateway(req.dbClient);
     const questionGateway = new QuestionGateway(req.dbClient);
+    const classroomGateway = new ClassroomGateway(req.dbClient);
 
     await new GetStudentProgressController(
-      new GetStudentProgress(activityGateway, studentAnswerGateway, activityStudentGateway, studentGateway, accountGateway, questionGateway)
+      new GetStudentProgress(activityGateway, studentAnswerGateway, activityStudentGateway, studentGateway, accountGateway, questionGateway, classroomGateway)
     ).handle(req, res);
   }));
 };

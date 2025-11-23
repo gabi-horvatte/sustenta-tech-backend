@@ -6,6 +6,7 @@ import ActivityStudentGateway from '@/modules/Activities/datasource/ActivityStud
 import StudentGateway from '@/modules/Classroom/datasource/Student/gateway';
 import AccountGateway from '@/modules/Authentication/datasource/Account/gateway';
 import QuestionGateway from '../../../datasource/Question/gateway';
+import ClassroomGateway from '@/modules/Classroom/datasource/Classroom/gateway';
 
 export default class GetStudentProgress extends UseCase<GetStudentProgressInput, GetStudentProgressOutput> {
   constructor(
@@ -15,6 +16,7 @@ export default class GetStudentProgress extends UseCase<GetStudentProgressInput,
     private readonly studentGateway: StudentGateway,
     private readonly accountGateway: AccountGateway,
     private readonly questionGateway: QuestionGateway,
+    private readonly classroomGateway: ClassroomGateway,
   ) {
     super();
   }
@@ -26,17 +28,23 @@ export default class GetStudentProgress extends UseCase<GetStudentProgressInput,
       throw new Error('Activity not found');
     }
 
+    // Get classroom details
+    const classroom = await this.classroomGateway.findById({ id: activity.classroom_id });
+    if (!classroom) {
+      throw new Error('Classroom not found');
+    }
+
     // Get all students in the classroom
     const allStudents = await this.studentGateway.findByClassroomId({ classroomId: activity.classroom_id });
-    
+
     // Get activity completion data
     const activityStudents = await this.activityStudentGateway.findByActivityId(input.activity_id);
-    
+
     // Get all student answers for this activity
     const allAnswers = await this.studentAnswerGateway.findByActivity(input.activity_id);
-    
+
     // Get total questions count
-    const questions = activity.activity_template_id 
+    const questions = activity.activity_template_id
       ? await this.questionGateway.findByActivityTemplateId(activity.activity_template_id)
       : [];
     const totalQuestions = questions.length;
@@ -54,13 +62,21 @@ export default class GetStudentProgress extends UseCase<GetStudentProgressInput,
 
       const activityStudent = activityStudents.find(as => as.student_id === student.id);
       const studentAnswers = allAnswers.filter((answer: any) => answer.student_id === student.id);
-      
+
       const correctAnswers = studentAnswers.filter((answer: any) => answer.is_correct).length;
       const scorePercentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
 
       studentsProgress.push({
         student_id: student.id,
         student_name: studentName,
+        student_first_name: account?.name,
+        student_last_name: account?.last_name,
+        student_email: account?.email,
+        student_code: student.code,
+        student_phone: account?.phone,
+        student_birth_date: account?.birth_date,
+        student_classroom_id: student.classroom_id,
+        student_classroom_name: classroom?.name,
         completed_at: activityStudent?.completed_at || null,
         total_questions: totalQuestions,
         correct_answers: correctAnswers,
