@@ -9,3 +9,4 @@ export type DeleteMaterialTemplateInput = z.infer<typeof deleteMaterialTemplateI
 export type DeleteMaterialTemplateOutput = {
   id: string;
 };
+

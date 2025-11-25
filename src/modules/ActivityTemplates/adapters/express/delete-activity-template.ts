@@ -16,3 +16,4 @@ export default class DeleteActivityTemplateController {
     res.status(200).json(result);
   }
 }
+

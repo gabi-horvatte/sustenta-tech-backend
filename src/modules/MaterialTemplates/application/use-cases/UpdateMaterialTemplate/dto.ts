@@ -25,3 +25,4 @@ export type UpdateMaterialTemplateOutput = {
   updated_at: Date;
 };
 
+

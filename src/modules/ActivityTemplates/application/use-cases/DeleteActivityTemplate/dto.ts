@@ -9,3 +9,4 @@ export type DeleteActivityTemplateInput = z.infer<typeof deleteActivityTemplateI
 export type DeleteActivityTemplateOutput = {
   id: string;
 };
+

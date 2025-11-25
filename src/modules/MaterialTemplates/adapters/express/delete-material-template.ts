@@ -16,3 +16,4 @@ export default class DeleteMaterialTemplateController {
     res.status(200).json(result);
   }
 }
+

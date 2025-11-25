@@ -22,3 +22,4 @@ export default class DeleteActivityTemplate extends UseCase<DeleteActivityTempla
     };
   }
 }
+

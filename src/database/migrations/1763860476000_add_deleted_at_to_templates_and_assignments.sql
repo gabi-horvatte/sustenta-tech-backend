@@ -9,3 +9,4 @@ ALTER TABLE material_template DROP COLUMN deleted_at;
 ALTER TABLE activity_template DROP COLUMN deleted_at;
 ALTER TABLE material_assignment DROP COLUMN deleted_at;
 ALTER TABLE activity DROP COLUMN deleted_at;
+
