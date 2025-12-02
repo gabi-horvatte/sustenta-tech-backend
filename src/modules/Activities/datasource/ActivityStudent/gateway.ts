@@ -86,4 +86,14 @@ export default class ActivityStudentGateway implements TableDataGateway<Activity
       `, activityIds);
     return result.rows;
   }
+
+  async findByActivityIdsAndStudentId(activityIds: string[], studentId: string): Promise<ActivityStudent[]> {
+    if (activityIds.length === 0) return [];
+    const placeholders = activityIds.map((_, i) => `$${i + 1}`).join(',');
+    const result = await this.client.query(`
+      SELECT activity_student.* FROM activity_student 
+      WHERE activity_student.activity_id IN (${placeholders}) AND activity_student.student_id = $${activityIds.length + 1}
+      `, [...activityIds, studentId]);
+    return result.rows;
+  }
 } 

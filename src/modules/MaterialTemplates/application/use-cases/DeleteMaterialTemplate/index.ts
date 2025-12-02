@@ -23,3 +23,4 @@ export default class DeleteMaterialTemplate extends UseCase<DeleteMaterialTempla
   }
 }
 
+

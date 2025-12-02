@@ -10,3 +10,4 @@ export type DeleteMaterialTemplateOutput = {
   id: string;
 };
 
+

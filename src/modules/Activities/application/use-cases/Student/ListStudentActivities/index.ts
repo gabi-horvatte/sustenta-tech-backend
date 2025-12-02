@@ -19,14 +19,14 @@ export default class ListStudentActivities extends UseCase<ListStudentActivities
       throw new Error('Student not found');
 
     const activities = await this.activityGateway.findByClassroomId({ classroomId: student.classroom_id });
-    const activityStudents = await this.activityStudentGateway.findByActivityIds(activities.map((activity) => activity.id));
+    const activityStudents = await this.activityStudentGateway.findByActivityIdsAndStudentId(activities.map((activity) => activity.id), input.student_id);
 
     return activities.map((activity) => {
       return {
         id: activity.id,
         activity_id: activity.id,
         student_id: input.student_id,
-        completed_at: activityStudents.find((activityStudent) => activityStudent.activity_id === activity.id)?.completed_at || null,
+        completed_at: activityStudents.find((activityStudent) => activityStudent.activity_id === activity.id && activityStudent.student_id === input.student_id)?.completed_at || null,
         activity_name: activity.name,
         expires_at: activity.expires_at,
         description: activity.description,
