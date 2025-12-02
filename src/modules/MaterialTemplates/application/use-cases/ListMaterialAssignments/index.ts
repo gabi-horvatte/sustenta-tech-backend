@@ -3,19 +3,21 @@ import { ListMaterialAssignmentsInput, ListMaterialAssignmentsOutput } from './d
 import MaterialAssignmentGateway from '../../../datasource/MaterialAssignment/gateway';
 import MaterialTemplateGateway from '../../../datasource/MaterialTemplate/gateway';
 import ClassroomGateway from '@/modules/Classroom/datasource/Classroom/gateway';
+import AccountGateway from '@/modules/Authentication/datasource/Account/gateway';
 
 export default class ListMaterialAssignments extends UseCase<ListMaterialAssignmentsInput, ListMaterialAssignmentsOutput> {
   constructor(
     private readonly materialAssignmentGateway: MaterialAssignmentGateway,
     private readonly materialTemplateGateway: MaterialTemplateGateway,
     private readonly classroomGateway: ClassroomGateway,
+    private accountGateway: AccountGateway,
   ) {
     super();
   }
 
   async execute(input: ListMaterialAssignmentsInput): Promise<ListMaterialAssignmentsOutput> {
     let assignments;
-    
+
     if (input.classroom_id) {
       assignments = await this.materialAssignmentGateway.findByClassroomId(input.classroom_id);
     } else if (input.assigned_by) {
@@ -26,12 +28,13 @@ export default class ListMaterialAssignments extends UseCase<ListMaterialAssignm
     }
 
     const result = [];
-    
+
     for (const assignment of assignments) {
       const template = await this.materialTemplateGateway.findById({ id: assignment.material_template_id });
       const classroom = await this.classroomGateway.findById({ id: assignment.classroom_id });
-      
-      if (!template || !classroom) continue;
+      const teacher = await this.accountGateway.findById({ id: assignment.assigned_by });
+
+      if (!template || !classroom || !teacher) continue;
 
       result.push({
         id: assignment.id,
@@ -44,6 +47,8 @@ export default class ListMaterialAssignments extends UseCase<ListMaterialAssignm
         created_at: assignment.created_at,
         classroom_id: assignment.classroom_id,
         classroom_name: classroom.name,
+        teacher_id: assignment.assigned_by,
+        teacher_name: `${teacher.name} ${teacher.last_name}`,
       });
     }
 

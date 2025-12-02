@@ -77,7 +77,7 @@ export const setupMaterialTemplatesRoutes = (router: Router) => {
   // List material templates
   router.get("/material-template", asyncHandler(async (req, res) => {
     const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
-    
+
     await new ListMaterialTemplatesController(
       new ListMaterialTemplates(materialTemplateGateway)
     ).handle(req, res);
@@ -88,10 +88,10 @@ export const setupMaterialTemplatesRoutes = (router: Router) => {
     const materialAssignmentGateway = new MaterialAssignmentGateway(req.dbClient);
     const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
     const classroomGateway = new ClassroomGateway(req.dbClient);
-    
+
     const studentGateway = new StudentGateway(req.dbClient);
     const notificationGateway = new NotificationGateway(req.dbClient);
-    
+
     await new AssignMaterialController(
       new AssignMaterial(materialAssignmentGateway, materialTemplateGateway, classroomGateway, studentGateway, notificationGateway)
     ).handle(req, res);
@@ -102,12 +102,12 @@ export const setupMaterialTemplatesRoutes = (router: Router) => {
     const materialCompletionGateway = new MaterialCompletionGateway(req.dbClient);
     const materialAssignmentGateway = new MaterialAssignmentGateway(req.dbClient);
     const studentGateway = new StudentGateway(req.dbClient);
-    
+
     const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
     const notificationGateway = new NotificationGateway(req.dbClient);
     const accountGateway = new AccountGateway(req.dbClient);
     const classroomGateway = new ClassroomGateway(req.dbClient);
-    
+
     await new CompleteMaterialController(
       new CompleteMaterial(materialCompletionGateway, materialAssignmentGateway, materialTemplateGateway, studentGateway, notificationGateway, accountGateway, classroomGateway)
     ).handle(req, res);
@@ -119,7 +119,7 @@ export const setupMaterialTemplatesRoutes = (router: Router) => {
     const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
     const materialCompletionGateway = new MaterialCompletionGateway(req.dbClient);
     const studentGateway = new StudentGateway(req.dbClient);
-    
+
     await new ListStudentMaterialsController(
       new ListStudentMaterials(materialAssignmentGateway, materialTemplateGateway, materialCompletionGateway, studentGateway)
     ).handle(req, res);
@@ -130,9 +130,10 @@ export const setupMaterialTemplatesRoutes = (router: Router) => {
     const materialAssignmentGateway = new MaterialAssignmentGateway(req.dbClient);
     const materialTemplateGateway = new MaterialTemplateGateway(req.dbClient);
     const classroomGateway = new ClassroomGateway(req.dbClient);
-    
+    const accountGateway = new AccountGateway(req.dbClient);
+
     await new ListMaterialAssignmentsController(
-      new ListMaterialAssignments(materialAssignmentGateway, materialTemplateGateway, classroomGateway)
+      new ListMaterialAssignments(materialAssignmentGateway, materialTemplateGateway, classroomGateway, accountGateway)
     ).handle(req, res);
   }));
 
@@ -144,13 +145,13 @@ export const setupMaterialTemplatesRoutes = (router: Router) => {
     const classroomGateway = new ClassroomGateway(req.dbClient);
     const studentGateway = new StudentGateway(req.dbClient);
     const accountGateway = new AccountGateway(req.dbClient);
-    
+
     await new GetMaterialAssignmentDetailController(
       new GetMaterialAssignmentDetail(
-        materialAssignmentGateway, 
-        materialTemplateGateway, 
-        materialCompletionGateway, 
-        classroomGateway, 
+        materialAssignmentGateway,
+        materialTemplateGateway,
+        materialCompletionGateway,
+        classroomGateway,
         studentGateway,
         accountGateway
       )

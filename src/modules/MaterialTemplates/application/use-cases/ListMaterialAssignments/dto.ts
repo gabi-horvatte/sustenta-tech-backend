@@ -18,5 +18,7 @@ export type ListMaterialAssignmentsOutput = {
   created_at: Date;
   classroom_id: string;
   classroom_name: string;
+  teacher_id: string;
+  teacher_name: string;
 }[];
 

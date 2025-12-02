@@ -16,4 +16,5 @@ export type ListAllTeacherActivitiesOutput = {
   expires_at: Date;
   created_at: Date;
   updated_at: Date;
+  teacher_name: string;
 }[];

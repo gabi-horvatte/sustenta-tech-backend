@@ -3,10 +3,16 @@ import ListMaterialAssignments from '../../application/use-cases/ListMaterialAss
 import { listMaterialAssignmentsInputSchema } from '../../application/use-cases/ListMaterialAssignments/dto';
 
 export default class ListMaterialAssignmentsController {
-  constructor(private readonly listMaterialAssignments: ListMaterialAssignments) {}
+  constructor(private readonly listMaterialAssignments: ListMaterialAssignments) { }
 
   async handle(req: Request, res: Response): Promise<void> {
     try {
+      if (req.account?.role === 'TEACHER' && req.account.manager) {
+        const result = await this.listMaterialAssignments.execute({});
+        res.status(200).json(result);
+        return;
+      }
+
       const input = listMaterialAssignmentsInputSchema.parse(req.query);
       const result = await this.listMaterialAssignments.execute(input);
       res.status(200).json(result);

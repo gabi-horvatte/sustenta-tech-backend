@@ -67,9 +67,10 @@ export const setupActivitiesRoutes = (router: Router) => {
 
   router.get("/activity", asyncHandler(async (req, res, next) => {
     const activityGateway = new ActivityGateway(req.dbClient);
+    const accountGateway = new AccountGateway(req.dbClient);
     const studentGateway = new StudentGateway(req.dbClient);
     const activityStudentGateway = new ActivityStudentGateway(req.dbClient);
-    await new ListActivitiesController(new ListActivitiesAsTeacher(activityGateway), new ListActivitiesAsStudent(studentGateway, activityGateway, activityStudentGateway), new ListAllTeacherActivities(activityGateway), new ListAllActivities(activityGateway)).handle(req, res);
+    await new ListActivitiesController(new ListActivitiesAsTeacher(activityGateway), new ListActivitiesAsStudent(studentGateway, activityGateway, activityStudentGateway), new ListAllTeacherActivities(activityGateway, accountGateway), new ListAllActivities(activityGateway, accountGateway)).handle(req, res);
   }));
 
   router.get("/activity/:activity_id", asyncHandler(async (req, res, next) => {
