@@ -93,4 +93,12 @@ export default class ActivityGateway implements TableDataGateway<Activity, { id:
     return result.rows;
   }
 
+  async findAll(): Promise<Activity[]> {
+    const result = await this.client.query(`
+      SELECT activity.* FROM activity 
+      INNER JOIN activity_template ON activity.activity_template_id = activity_template.id
+      WHERE activity.deleted_at IS NULL AND activity_template.deleted_at IS NULL
+    `);
+    return result.rows;
+  }
 }

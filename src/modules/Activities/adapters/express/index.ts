@@ -33,6 +33,7 @@ import GetActivityReview from '../../application/use-cases/GetActivityReview';
 import GetActivityReviewController from './get-activity-review';
 import ActivityTemplateGateway from '@/modules/ActivityTemplates/datasource/ActivityTemplate/gateway';
 import QuestionOptionGateway from '@/modules/ActivityTemplates/datasource/QuestionOption/gateway';
+import ListAllActivities from '../../application/use-cases/Manager/ListAllActivities';
 
 export const setupActivitiesRoutes = (router: Router) => {
   router.put("/activity/:activity_id", asyncHandler(async (req, res, next) => {
@@ -68,7 +69,7 @@ export const setupActivitiesRoutes = (router: Router) => {
     const activityGateway = new ActivityGateway(req.dbClient);
     const studentGateway = new StudentGateway(req.dbClient);
     const activityStudentGateway = new ActivityStudentGateway(req.dbClient);
-    await new ListActivitiesController(new ListActivitiesAsTeacher(activityGateway), new ListActivitiesAsStudent(studentGateway, activityGateway, activityStudentGateway), new ListAllTeacherActivities(activityGateway)).handle(req, res);
+    await new ListActivitiesController(new ListActivitiesAsTeacher(activityGateway), new ListActivitiesAsStudent(studentGateway, activityGateway, activityStudentGateway), new ListAllTeacherActivities(activityGateway), new ListAllActivities(activityGateway)).handle(req, res);
   }));
 
   router.get("/activity/:activity_id", asyncHandler(async (req, res, next) => {
